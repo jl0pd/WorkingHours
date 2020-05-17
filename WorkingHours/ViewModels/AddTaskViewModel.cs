@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive;
-using System.Text;
+﻿using System.Reactive;
 using ReactiveUI;
 using WorkingHours.Models;
 
@@ -13,7 +10,6 @@ namespace WorkingHours.ViewModels
 
         public AddTaskViewModel()
         {
-
             Add = ReactiveCommand.Create(
                 () => new WorkingTask(TaskName!), 
                 this.WhenAnyValue(x => x.TaskName, x => !string.IsNullOrWhiteSpace(x)));

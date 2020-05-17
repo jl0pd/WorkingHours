@@ -13,10 +13,6 @@ namespace WorkingHours.Models
 
         public string Name { get; }
 
-        public bool IsPaused => CurrentState == State.Paused;
-
-        public bool IsCompleted => CurrentState == State.Completed;
-
         public TimeSpan Elapsed => CurrentState switch
         {
             State.NotStarted => TimeSpan.Zero,
@@ -25,6 +21,7 @@ namespace WorkingHours.Models
             State.Paused => throw new NotImplementedException(),
             _ => throw new NotImplementedException()
         };
+
         public TimeSpan TotalPausedTime { get; private set; }
 
         private DateTime StartPauseTime { get; set; }

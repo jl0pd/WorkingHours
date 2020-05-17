@@ -15,21 +15,6 @@
         ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
       <ListBox.ItemTemplate>
         <DataTemplate DataType="models:WorkingTask">
-          <!--
-            <Border Margin="2" BorderBrush="WhiteSmoke" BorderThickness="1">
-                <DockPanel>
-                    <Button Margin="2" Content="#" DockPanel.Dock="Right" />
-                    <Button Margin="2" Content="II" DockPanel.Dock="Right" />
-                    <Button Margin="2" Content=">" DockPanel.Dock="Right" />
-                    <TextBlock Margin="2" VerticalAlignment="Center"
-                        Text="{Binding Path=Elapsed, StringFormat=\{0:hh\\.mm\}}"
-                        TextWrapping="Wrap"
-                        DockPanel.Dock="Right" />
-                    <TextBlock Margin="2" VerticalAlignment="Center"
-                        Text="{Binding Name}" TextWrapping="Wrap" />
-                </DockPanel>
-            </Border>
-            -->
           <views:WorkingTaskItemView DataContext="{Binding}" />
         </DataTemplate>
       </ListBox.ItemTemplate>
