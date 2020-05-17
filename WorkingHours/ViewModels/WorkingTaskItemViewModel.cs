@@ -1,25 +1,27 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Drawing.Printing;
 using System.Reactive;
 using System.Timers;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
 using ReactiveUI;
-using Serilog;
 using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
 {
     public class WorkingTaskItemViewModel : ViewModelBase
     {
-        private WorkingTask Task { get; }
+        public WorkingTask Task { get; }
 
         private TimeSpan Elapsed => Task.Elapsed;
-        private DateTime StartTime => Task.StartTime;
 
-        private Timer Timer { get; }
+        private string WorkTimeString => Task.CurrentState switch
+        {
+            WorkingTask.State.NotStarted => "? - ?",
+            WorkingTask.State.Completed => $"{Task.StartTime:HH:mm} - {Task.EndTime:HH:mm}",
+            _ => $"{Task.StartTime:HH:mm} - ?",
+        };
+
+        private const int Second = 1_000;
+
+        private Timer Timer { get; } = new Timer(60 * Second);
 
         public WorkingTaskItemViewModel(WorkingTask task)
         {
@@ -28,23 +30,30 @@ namespace WorkingHours.ViewModels
             {
                 Task.Start();
                 Timer.Start();
-                this.RaisePropertyChanged(nameof(StartTime));
-                Debug.Write(StartTime);
+                this.RaisePropertyChanged(nameof(WorkTimeString));
             });
 
             OnPauseClick = ReactiveCommand.Create(() =>
             {
-                Task.Pause();
-                Timer.Stop();
+                if (Task.CurrentState == WorkingTask.State.Paused)
+                {
+                    Task.Unpause();
+                    Timer.Start();
+                }
+                else
+                {
+                    Task.Pause();
+                    Timer.Stop();
+                }
             });
 
             OnStopClick = ReactiveCommand.Create(() =>
             {
                 Task.Stop();
                 Timer.Stop();
+                this.RaisePropertyChanged(nameof(WorkTimeString));
             });
 
-            Timer = new Timer(1000);
             Timer.Elapsed += (sender, e) => this.RaisePropertyChanged(nameof(Elapsed));
         }
 

@@ -11,11 +11,11 @@
       <Button Margin="2" Content="II" DockPanel.Dock="Right" Command="{Binding OnPauseClick}" />
       <Button Margin="2" Content=">" DockPanel.Dock="Right" Command="{Binding OnStartClick}" />
       <TextBlock Margin="2" VerticalAlignment="Center"
-          Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}"
+          Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\}}"
           TextWrapping="Wrap"
           DockPanel.Dock="Right" />
       <TextBlock Margin="2" VerticalAlignment="Center" DockPanel.Dock="Right"
-          Text="{Binding StartTime, StringFormat=\{0:HH\:mm\}}" TextWrapping="Wrap" />
+          Text="{Binding WorkTimeString}" TextWrapping="Wrap" />
       <TextBlock Margin="2" VerticalAlignment="Center"
           Text="{Binding Task.Name}" TextWrapping="Wrap" />
     </DockPanel>
