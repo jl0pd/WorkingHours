@@ -17,7 +17,7 @@
         SelectionMode="Multiple"
         ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
       <ListBox.ItemTemplate>
-        <DataTemplate DataType="models:WorkingTask">
+        <DataTemplate>
           <views:WorkingTaskItemView DataContext="{Binding}" />
         </DataTemplate>
       </ListBox.ItemTemplate>
