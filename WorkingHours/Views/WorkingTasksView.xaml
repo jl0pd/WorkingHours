@@ -9,7 +9,10 @@
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
              x:Class="WorkingHours.Views.WorkingTasksView">
   <DockPanel>
-    <Button  Content="Add" DockPanel.Dock="Bottom" Command="{Binding $parent[Window].DataContext.AddItem}" FontSize="14" />
+    <UniformGrid DockPanel.Dock="Bottom" Rows="1">
+      <Button Content="Pin" Command="{Binding $parent[Window].DataContext.Pin}" FontSize="14" />
+      <Button  Content="Add" Command="{Binding $parent[Window].DataContext.AddItem}" FontSize="14" />
+    </UniformGrid>
     <ListBox x:Name="MainListBox" Items="{Binding Items}"
         SelectionMode="Multiple"
         ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">

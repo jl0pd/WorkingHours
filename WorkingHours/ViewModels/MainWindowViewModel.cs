@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using WorkingHours.Models;
 
@@ -39,6 +41,14 @@ namespace WorkingHours.ViewModels
                     Content = List;
                 });
             Content = vm;
+        }
+
+        public void Pin()
+        {
+            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow.Topmost = !desktop.MainWindow.Topmost;
+            }
         }
 
         private ViewModelBase _content = null!;
