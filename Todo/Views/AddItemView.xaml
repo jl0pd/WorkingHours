@@ -1,0 +1,12 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Todo.Views.AddItemView">
+    <Grid ColumnDefinitions="*,*" RowDefinitions="*,40">
+        <TextBox Text="{Binding Description}" Watermark="Enter TODO" AcceptsReturn="True" FontSize="15" Grid.ColumnSpan="2" />
+        <Button Content="Confirm" Command="{Binding Ok}" FontSize="20" Grid.Row="1" Grid.Column="1" Background="LightGreen" Margin="1" BorderThickness="2"/>
+        <Button Content="Cancel" Command="{Binding Cancel}" FontSize="20" Grid.Row="1" Background="LightPink" Margin="1" BorderThickness="2"/>
+    </Grid>
+</UserControl>

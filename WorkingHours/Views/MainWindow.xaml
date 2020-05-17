@@ -1,0 +1,17 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
+        x:Class="WorkingHours.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="WorkingHours"
+        Width="300" MinWidth="250"
+        Height="250" MinHeight="150"
+        Content="{Binding Content}">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+</Window>
