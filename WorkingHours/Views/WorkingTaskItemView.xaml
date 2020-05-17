@@ -5,11 +5,28 @@
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="40"
              x:Class="WorkingHours.Views.WorkingTaskItemView">
 
-  <Border Margin="2" BorderBrush="WhiteSmoke" BorderThickness="1">
-    <DockPanel>
-      <Button Margin="2" Content="#" DockPanel.Dock="Right" Command="{Binding OnStopClick}" />
-      <Button Margin="2" Content="II" DockPanel.Dock="Right" Command="{Binding OnPauseClick}" />
-      <Button Margin="2" Content=">" DockPanel.Dock="Right" Command="{Binding OnStartClick}" />
+  <Border Margin="1" BorderBrush="WhiteSmoke" BorderThickness="1">
+    <DockPanel >
+      <Button Margin="1" DockPanel.Dock="Right" Command="{Binding OnStopClick}" 
+        MaxWidth="26" MaxHeight="26" MinWidth="26" MinHeight="26" >
+        <Rectangle Width="20" Height="20" Fill="DarkRed"></Rectangle>
+      </Button>
+      <Button Command="{Binding OnPauseClick}"
+              VerticalContentAlignment="Top" HorizontalContentAlignment="Left"
+              Margin="1" DockPanel.Dock="Right"
+              MaxWidth="26" MaxHeight="26" MinWidth="26" MinHeight="26" >
+        <UniformGrid Rows="1" Columns="2" Width="26" Height="26">
+          <Rectangle Fill="Yellow" Stroke="Yellow" Margin="3 5" />
+          <Rectangle Fill="Yellow" Stroke="Yellow" Margin="3 5" />
+        </UniformGrid>
+      </Button>
+      <Button Margin="1" DockPanel.Dock="Right" Command="{Binding OnStartClick}"
+        MaxWidth="26" MaxHeight="26" MinWidth="26" MinHeight="26" >
+        <Canvas Width="26" Height="26">
+          <Polygon Points="5,5 21,13 5,21" Fill="Green" Stroke="Green" Width="26">
+          </Polygon>
+        </Canvas>
+      </Button>
       <TextBlock Margin="2" VerticalAlignment="Center"
           Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\}}"
           TextWrapping="Wrap"
