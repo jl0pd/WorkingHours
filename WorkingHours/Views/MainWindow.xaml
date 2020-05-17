@@ -11,7 +11,7 @@
         Height="250" MinHeight="150"
         Content="{Binding Content}">
 
-    <Design.DataContext>
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
 </Window>

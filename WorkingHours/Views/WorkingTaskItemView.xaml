@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="40"
+             x:Class="WorkingHours.Views.WorkingTaskItemView">
+
+  <Border Margin="2" BorderBrush="WhiteSmoke" BorderThickness="1">
+    <DockPanel>
+      <Button Margin="2" Content="#" DockPanel.Dock="Right" Command="{Binding OnStopClick}" />
+      <Button Margin="2" Content="II" DockPanel.Dock="Right" Command="{Binding OnPauseClick}" />
+      <Button Margin="2" Content=">" DockPanel.Dock="Right" Command="{Binding OnStartClick}" />
+      <TextBlock Margin="2" VerticalAlignment="Center"
+          Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}"
+          TextWrapping="Wrap"
+          DockPanel.Dock="Right" />
+      <TextBlock Margin="2" VerticalAlignment="Center" DockPanel.Dock="Right"
+          Text="{Binding StartTime, StringFormat=\{0:HH\:mm\}}" TextWrapping="Wrap" />
+      <TextBlock Margin="2" VerticalAlignment="Center"
+          Text="{Binding Task.Name}" TextWrapping="Wrap" />
+    </DockPanel>
+  </Border>
+</UserControl>

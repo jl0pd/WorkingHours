@@ -2,35 +2,42 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:WorkingHours.Models;assembly=WorkingHours"
+             xmlns:views="clr-namespace:WorkingHours.Views;assembly=WorkingHours"
+             xmlns:vms="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
+             
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
              x:Class="WorkingHours.Views.WorkingTasksView">
-    <DockPanel>
-        <Button  Content="Add" DockPanel.Dock="Bottom" Command="{Binding $parent[Window].DataContext.AddItem}" FontSize="14" />
-        <ListBox x:Name="MainListBox" Items="{Binding Items}" 
-            SelectionMode="Multiple"
-            ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="2" BorderBrush="WhiteSmoke" BorderThickness="1">
-                        <DockPanel>
-                            <Button Margin="2" Content="#" DockPanel.Dock="Right" />
-                            <Button Margin="2" Content="II" DockPanel.Dock="Right" Command="{Binding OnPauseClick}" />
-                            <Button Margin="2" Content=">" DockPanel.Dock="Right" Command="{Binding OnStartClick}" />
-                            <TextBlock Margin="2" VerticalAlignment="Center" 
-                                Text="{Binding Path=Elapsed, StringFormat=\{0:hh\\.mm\}}" 
-                                TextWrapping="Wrap"
-                                DockPanel.Dock="Right" />
-                            <TextBlock Margin="2" VerticalAlignment="Center" 
-                                Text="{Binding Name}" TextWrapping="Wrap" />
-                        </DockPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-            <ListBox.ContextMenu>
-                <ContextMenu>
-                    <Button Content="Delete selected" Width="100" ClickMode="Release" Command="{Binding DeleteSelected}" />
-                </ContextMenu>
-            </ListBox.ContextMenu>
-        </ListBox>
-    </DockPanel>
+  <DockPanel>
+    <Button  Content="Add" DockPanel.Dock="Bottom" Command="{Binding $parent[Window].DataContext.AddItem}" FontSize="14" />
+    <ListBox x:Name="MainListBox" Items="{Binding Items}"
+        SelectionMode="Multiple"
+        ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+      <ListBox.ItemTemplate>
+        <DataTemplate DataType="models:WorkingTask">
+          <!--
+            <Border Margin="2" BorderBrush="WhiteSmoke" BorderThickness="1">
+                <DockPanel>
+                    <Button Margin="2" Content="#" DockPanel.Dock="Right" />
+                    <Button Margin="2" Content="II" DockPanel.Dock="Right" />
+                    <Button Margin="2" Content=">" DockPanel.Dock="Right" />
+                    <TextBlock Margin="2" VerticalAlignment="Center"
+                        Text="{Binding Path=Elapsed, StringFormat=\{0:hh\\.mm\}}"
+                        TextWrapping="Wrap"
+                        DockPanel.Dock="Right" />
+                    <TextBlock Margin="2" VerticalAlignment="Center"
+                        Text="{Binding Name}" TextWrapping="Wrap" />
+                </DockPanel>
+            </Border>
+            -->
+          <views:WorkingTaskItemView DataContext="{Binding}" />
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+      <ListBox.ContextMenu>
+        <ContextMenu>
+          <Button Content="Delete selected" Width="100" ClickMode="Release" Command="{Binding DeleteSelected}" />
+        </ContextMenu>
+      </ListBox.ContextMenu>
+    </ListBox>
+  </DockPanel>
 </UserControl>

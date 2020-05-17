@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
              x:Class="WorkingHours.Views.AddTaskView">
-    <DockPanel>
-        <UniformGrid Columns="2" DockPanel.Dock="Bottom">
-            <Button Content="Cancel" Command="{Binding Cancel}" FontSize="14" Background="DarkRed"/>
-            <Button Content="Add" Command="{Binding Add}" FontSize="14" Background="SeaGreen" />
-        </UniformGrid>
-        <TextBox Text="{Binding TaskName}" AcceptsReturn="True">
-            <TextBlock.FontStyle>
-            </TextBlock.FontStyle>
-        </TextBox>
-    </DockPanel>
+  <DockPanel>
+    <UniformGrid Columns="2" DockPanel.Dock="Bottom">
+      <Button Content="Cancel" Command="{Binding Cancel}" FontSize="14" Background="DarkRed"/>
+      <Button Content="Add" Command="{Binding Add}" FontSize="14" Background="SeaGreen" />
+    </UniformGrid>
+    <TextBox Text="{Binding TaskName}" AcceptsReturn="True">
+      <TextBlock.FontStyle>
+      </TextBlock.FontStyle>
+    </TextBox>
+  </DockPanel>
 </UserControl>

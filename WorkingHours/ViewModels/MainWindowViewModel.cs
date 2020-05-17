@@ -12,9 +12,13 @@ namespace WorkingHours.ViewModels
     {
         public MainWindowViewModel()
         {
-            Content = List = new WorkingTasksViewModel(Enumerable.Empty<WorkingTask>());
+            Content = List = new WorkingTasksViewModel(new[]
+            {
+                new WorkingTask("1243"),
+                new WorkingTask("1245"),
+                new WorkingTask("1246"),
+            });
         }
-
         public ViewModelBase Content
         {
             get => _content;
@@ -31,7 +35,7 @@ namespace WorkingHours.ViewModels
                 {
                     if (item != null)
                     {
-                        List.Items.Add(item);
+                        List.Items.Add(new WorkingTaskItemViewModel(item));
                     }
                     Content = List;
                 });

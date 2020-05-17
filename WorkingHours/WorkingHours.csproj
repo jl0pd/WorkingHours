@@ -15,16 +15,18 @@
     </ItemGroup>
     <ItemGroup>
       <AvaloniaResource Remove="Views\AddTaskView.xaml" />
+      <AvaloniaResource Remove="Views\WorkingTaskItemView.xaml" />
       <AvaloniaResource Remove="Views\WorkingTasksView.xaml" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="Views\AddTaskView.xaml" />
+      <None Remove="Views\WorkingTaskItemView.xaml" />
       <None Remove="Views\WorkingTasksView.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.9.4" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.9.4" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.4" />
+        <PackageReference Include="Avalonia" Version="0.9.10" />
+        <PackageReference Include="Avalonia.Desktop" Version="0.9.10" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
     </ItemGroup>
     <ItemGroup>
@@ -34,6 +36,11 @@
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Include="Views\WorkingTasksView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\WorkingTaskItemView.xaml">
         <Generator>MSBuild:Compile</Generator>
       </EmbeddedResource>
     </ItemGroup>
