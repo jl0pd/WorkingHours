@@ -21,7 +21,7 @@ namespace WorkingHours.ViewModels
 
         private const int Second = 1_000;
 
-        private Timer Timer { get; } = new Timer(60 * Second);
+        private Timer Timer { get; } = new Timer(Second);
 
         public WorkingTaskItemViewModel(WorkingTask task)
         {
@@ -53,6 +53,7 @@ namespace WorkingHours.ViewModels
                     Task.Pause();
                     Timer.Stop();
                 }
+                this.RaisePropertyChanged(nameof(Elapsed));
             });
 
             OnStopClick = ReactiveCommand.Create(() =>
