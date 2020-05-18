@@ -9,9 +9,6 @@
       <Button Content="Cancel" Command="{Binding Cancel}" FontSize="14" Background="DarkRed"/>
       <Button Content="Add" Command="{Binding Add}" FontSize="14" Background="SeaGreen" />
     </UniformGrid>
-    <TextBox Text="{Binding TaskName}" AcceptsReturn="True">
-      <TextBlock.FontStyle>
-      </TextBlock.FontStyle>
-    </TextBox>
+    <TextBox Text="{Binding TaskName}" Watermark="Enter task..." AcceptsReturn="True" FontSize="14" />
   </DockPanel>
 </UserControl>
