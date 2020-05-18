@@ -26,9 +26,17 @@ namespace WorkingHours.ViewModels
         public WorkingTaskItemViewModel(WorkingTask task)
         {
             Task = task;
+
             OnStartClick = ReactiveCommand.Create(() =>
             {
-                Task.Start();
+                if (Task.CurrentState == WorkingTask.State.NotStarted)
+                {
+                    Task.Start();
+                }
+                else
+                {
+                    Task.Unpause();
+                }
                 Timer.Start();
                 this.RaisePropertyChanged(nameof(WorkTimeString));
             });
