@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using Avalonia;
@@ -12,18 +13,20 @@ namespace WorkingHours.ViewModels
     {
         public MainWindowViewModel()
         {
-            Content = List = new WorkingTasksViewModel(new[]
-            {
-                new WorkingTask("1243"),
-                new WorkingTask("1245"),
-                new WorkingTask("1246"),
-            });
+            Content = List = new WorkingTasksViewModel(Enumerable.Empty<WorkingTask>());
         }
 
         public ViewModelBase Content
         {
             get => _content;
             private set => this.RaiseAndSetIfChanged(ref _content, value);
+        }
+
+        public void ShowElapsed()
+        {
+            var vm = new TotalElapsedViewModel(List.Items.Select(t => t.Task));
+            vm.Back.Take(1).Subscribe(u => Content = List);
+            Content = vm;
         }
 
         public void AddItem()
@@ -51,8 +54,8 @@ namespace WorkingHours.ViewModels
             }
         }
 
-        private ViewModelBase _content = null!;
-
         public WorkingTasksViewModel List { get; }
+
+        private ViewModelBase _content = null!;
     }
 }

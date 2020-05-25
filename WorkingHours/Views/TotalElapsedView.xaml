@@ -1,0 +1,28 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="450"
+             x:Class="WorkingHours.Views.TotalElapsedView">
+  <DockPanel>
+    <UniformGrid Rows="1" DockPanel.Dock="Bottom">
+      <Button Content="Back" Command="{Binding Back}" FontSize="14"/>
+    </UniformGrid>
+    <DockPanel DockPanel.Dock="Bottom" Background="DarkCyan" Height="26">
+      <TextBlock Text="{Binding TotalWorkTime, StringFormat=Elapsed: \{0:hh\\.mm\\.ss\}}" 
+                 FontSize="14" VerticalAlignment="Center" Margin="5 0 0 0" />
+    </DockPanel>
+    <ListBox Items="{Binding Tasks}">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Border BorderBrush="White" BorderThickness="1">
+            <DockPanel Margin="3">
+              <TextBlock Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}" FontSize="14" DockPanel.Dock="Right"/>
+              <TextBlock Text="{Binding Name}" FontSize="14" DockPanel.Dock="Left"/>
+            </DockPanel>
+          </Border>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </DockPanel>
+</UserControl>
