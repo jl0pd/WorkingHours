@@ -7,23 +7,23 @@
 
   <Border Margin="1" BorderBrush="WhiteSmoke" BorderThickness="1">
     <DockPanel>
-      <WrapPanel DockPanel.Dock="Right" ItemWidth="26" ItemHeight="26" Width="54">
-        <Button Margin="1" Command="{Binding OnStartClick}">
-          <Canvas Width="26" Height="26">
-            <Polygon Points="5,5 21,13 5,21" Fill="Green" Stroke="Green" Width="26" />
-          </Canvas>
-        </Button>
-        <Button Command="{Binding OnPauseClick}" Margin="1"
-                VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
-          <UniformGrid Rows="1" Columns="2" Width="26" Height="26">
-            <Rectangle Fill="Yellow" Stroke="Yellow" Margin="5 5 3 5" />
-            <Rectangle Fill="Yellow" Stroke="Yellow" Margin="3 5 5 5" />
-          </UniformGrid>
-        </Button>
-        <Button Margin="1" Command="{Binding OnStopClick}">
-          <Rectangle Width="18" Height="18" Fill="DarkRed"/>
-        </Button>
-      </WrapPanel>
+      <Button Command="{Binding OnCancelClick}"
+              Width="26" Height="26" Margin="1" DockPanel.Dock="Right">
+        <Canvas Width="26" Height="26">
+          <Line StartPoint="5 5" EndPoint="21 21" Stroke="DarkRed" StrokeThickness="3"/>
+          <Line StartPoint="21 5" EndPoint="5 21" Stroke="DarkRed" StrokeThickness="3"/>
+        </Canvas>
+      </Button>
+      <Button Command="{Binding OnStopClick}"
+              Width="26" Height="26" Margin="1" DockPanel.Dock="Right">
+        <Rectangle Width="18" Height="18" Fill="Yellow"/>
+      </Button>
+      <Button Command="{Binding OnStartClick}"
+              Width="26" Height="26" Margin="1" DockPanel.Dock="Right">
+        <Canvas Width="26" Height="26">
+          <Polygon Points="5,5 21,13 5,21" Fill="Green" Stroke="Green" Width="26" />
+        </Canvas>
+      </Button>
       <UniformGrid DockPanel.Dock="Right" Columns="1">
         <TextBlock Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center"
             Text="{Binding WorkTimeString}" TextWrapping="NoWrap" />

@@ -5,14 +5,14 @@
              xmlns:models="clr-namespace:WorkingHours.Models;assembly=WorkingHours"
              xmlns:views="clr-namespace:WorkingHours.Views;assembly=WorkingHours"
              xmlns:vms="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
-             
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
              x:Class="WorkingHours.Views.WorkingTasksView">
   <DockPanel>
-    <UniformGrid DockPanel.Dock="Bottom" Rows="1">
+    <DockPanel DockPanel.Dock="Bottom">
       <Button Content="Pin" Command="{Binding $parent[Window].DataContext.Pin}" FontSize="14" />
+      <Button Content="Show Elapsed" Command="{Binding $parent[Window].DataContext.ShowElapsed}" FontSize="14"/>
       <Button  Content="Add" Command="{Binding $parent[Window].DataContext.AddItem}" FontSize="14" />
-    </UniformGrid>
+    </DockPanel>
     <ListBox x:Name="MainListBox" Items="{Binding Items}"
         SelectionMode="Multiple"
         ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -21,11 +21,6 @@
           <views:WorkingTaskItemView DataContext="{Binding}" />
         </DataTemplate>
       </ListBox.ItemTemplate>
-      <ListBox.ContextMenu>
-        <ContextMenu>
-          <Button Content="Delete selected" Width="100" ClickMode="Release" Command="{Binding DeleteSelected}" />
-        </ContextMenu>
-      </ListBox.ContextMenu>
     </ListBox>
   </DockPanel>
 </UserControl>

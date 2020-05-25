@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Linq;
-using Avalonia.Controls;
 using DynamicData;
-using ReactiveUI;
 using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
@@ -19,55 +16,22 @@ namespace WorkingHours.ViewModels
         public WorkingTasksViewModel(IEnumerable<WorkingTask> items)
         {
             Items = new ObservableCollection<WorkingTaskItemViewModel>();
-            
+
 
             Items.CollectionChanged += (sender, e) =>
             {
                 switch (e.Action)
                 {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in e.NewItems.Cast<WorkingTaskItemViewModel>())
+                    foreach (WorkingTaskItemViewModel? item in e.NewItems)
                     {
-                        item.PropertyChanged += OnPropertyChanged;
-                    }
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                case NotifyCollectionChangedAction.Remove:
-                case NotifyCollectionChangedAction.Reset:
-                    foreach (var item in e.OldItems.Cast<WorkingTaskItemViewModel>())
-                    {
-                        item.PropertyChanged -= OnPropertyChanged;
+                        item?.OnCancelClick.Take(1).Subscribe(t => Items.Remove(t));
                     }
                     break;
                 }
             };
 
             Items.AddRange(items.Select(item => new WorkingTaskItemViewModel(item)));
-
-
-            DeleteSelected = ReactiveCommand.Create(() =>
-            {
-                Items.RemoveMany(SelectedItems);
-                SelectedItems.Clear();
-            });
-        }
-
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(OnPropertyChanged) && sender is WorkingTaskItemViewModel item)
-            {
-            }
-        }
-
-        public ReactiveCommand<Unit, Unit> DeleteSelected { get; }
-
-        private List<WorkingTaskItemViewModel> SelectedItems { get; set; } = new List<WorkingTaskItemViewModel>();
-
-        private void OnSelectionChanged(object? sender, SelectionChangedEventArgs e)
-        {
-            // TODO: Make it work
-            SelectedItems.Add(e.AddedItems.Cast<WorkingTaskItemViewModel>());
-            SelectedItems.RemoveMany(e.RemovedItems.Cast<WorkingTaskItemViewModel>());
         }
     }
 }

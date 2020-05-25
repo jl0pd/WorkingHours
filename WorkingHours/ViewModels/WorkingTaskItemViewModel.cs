@@ -27,33 +27,13 @@ namespace WorkingHours.ViewModels
         {
             Task = task;
 
+            Timer.Elapsed += (sender, e) => this.RaisePropertyChanged(nameof(Elapsed));
+
             OnStartClick = ReactiveCommand.Create(() =>
             {
-                if (Task.CurrentState == WorkingTask.State.NotStarted)
-                {
-                    Task.Start();
-                }
-                else
-                {
-                    Task.Unpause();
-                }
+                Task.Start();
                 Timer.Start();
                 this.RaisePropertyChanged(nameof(WorkTimeString));
-            });
-
-            OnPauseClick = ReactiveCommand.Create(() =>
-            {
-                if (Task.CurrentState == WorkingTask.State.Paused)
-                {
-                    Task.Unpause();
-                    Timer.Start();
-                }
-                else
-                {
-                    Task.Pause();
-                    Timer.Stop();
-                }
-                this.RaisePropertyChanged(nameof(Elapsed));
             });
 
             OnStopClick = ReactiveCommand.Create(() =>
@@ -63,11 +43,13 @@ namespace WorkingHours.ViewModels
                 this.RaisePropertyChanged(nameof(WorkTimeString));
             });
 
-            Timer.Elapsed += (sender, e) => this.RaisePropertyChanged(nameof(Elapsed));
+            OnCancelClick = ReactiveCommand.Create(() => this);
         }
 
+        public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnCancelClick { get; }
+
         public ReactiveCommand<Unit, Unit> OnStartClick { get; }
-        public ReactiveCommand<Unit, Unit> OnPauseClick { get; }
+
         public ReactiveCommand<Unit, Unit> OnStopClick { get; }
     }
 }
