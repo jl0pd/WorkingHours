@@ -17,7 +17,9 @@ namespace WorkingHours.ViewModels
             Back = ReactiveCommand.Create(() => { });
         }
 
-        public TimeSpan TotalWorkTime => Tasks.Select(t => t.Elapsed).Aggregate((acc, t) => acc + t);
+        public TimeSpan TotalWorkTime => Tasks.Any()
+            ? Tasks.Select(t => t.Elapsed).Aggregate((acc, t) => acc + t)
+            : TimeSpan.Zero;
 
         private IReadOnlyList<WorkingTaskGroup> Tasks { get; }
 
