@@ -11,7 +11,7 @@ namespace WorkingHours.ViewModels
         public AddTaskViewModel()
         {
             Add = ReactiveCommand.Create(
-                () => new WorkingTask(TaskName!), 
+                () => new WorkingTask(TaskName!.Trim()), 
                 this.WhenAnyValue(x => x.TaskName, x => !string.IsNullOrWhiteSpace(x)));
             
             Cancel = ReactiveCommand.Create(() => { });
