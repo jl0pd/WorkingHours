@@ -16,6 +16,7 @@
     <ItemGroup>
       <AvaloniaResource Remove="Views\AboutWindow.xaml" />
       <AvaloniaResource Remove="Views\AddTaskView.xaml" />
+      <AvaloniaResource Remove="Views\MiniMainWindow.xaml" />
       <AvaloniaResource Remove="Views\SettingsPanelView.xaml" />
       <AvaloniaResource Remove="Views\TotalElapsedView.xaml" />
       <AvaloniaResource Remove="Views\WorkingTaskItemView.xaml" />
@@ -24,6 +25,7 @@
     <ItemGroup>
       <None Remove="Views\AboutWindow.xaml" />
       <None Remove="Views\AddTaskView.xaml" />
+      <None Remove="Views\MiniMainWindow.xaml" />
       <None Remove="Views\SettingsPanelView.xaml" />
       <None Remove="Views\TotalElapsedView.xaml" />
       <None Remove="Views\WorkingTaskItemView.xaml" />
@@ -63,6 +65,11 @@
     </ItemGroup>
     <ItemGroup>
       <EmbeddedResource Include="Views\SettingsPanelView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\MiniMainWindow.xaml">
         <Generator>MSBuild:Compile</Generator>
       </EmbeddedResource>
     </ItemGroup>

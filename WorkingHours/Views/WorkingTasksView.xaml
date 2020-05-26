@@ -19,7 +19,6 @@
           <Setter Property="BorderThickness" Value="1" />
           <Setter Property="BorderBrush" Value="Gray" />
           <Setter Property="Margin" Value="0" />
-          <Setter Property="MaxWidth" Value="100" />
           <Setter Property="MaxHeight" Value="30" />
         </Style>
       </UniformGrid.Styles>

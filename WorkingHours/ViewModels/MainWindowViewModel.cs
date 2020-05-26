@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using WorkingHours.Models;
+using WorkingHours.Views;
 
 namespace WorkingHours.ViewModels
 {
@@ -47,10 +48,12 @@ namespace WorkingHours.ViewModels
                     if (item != null)
                     {
                         List.Items.Add(new WorkingTaskItemViewModel(item));
+                        new MiniMainWindow(List.Items.Last()).Show();
                     }
                     Content = List;
                 });
             Content = vm;
+
         }
 
         public void Pin()
