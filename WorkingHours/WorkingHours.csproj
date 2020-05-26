@@ -66,9 +66,4 @@
         <Generator>MSBuild:Compile</Generator>
       </EmbeddedResource>
     </ItemGroup>
-    <ItemGroup>
-      <Compile Update="Views\SettingsPanelView.xaml.cs">
-        <DependentUpon>SettingsPanelView.xaml</DependentUpon>
-      </Compile>
-    </ItemGroup>
 </Project>

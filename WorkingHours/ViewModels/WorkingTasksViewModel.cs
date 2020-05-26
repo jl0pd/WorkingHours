@@ -42,7 +42,6 @@ namespace WorkingHours.ViewModels
                                 ButtonDefinitions = ButtonEnum.YesNo
                             });
 
-
                             ButtonResult res = await (parentWindow != null
                                 ? msg.ShowDialog(parentWindow)
                                 : msg.Show());

@@ -19,7 +19,7 @@ namespace WorkingHours.Views
 
         private IReadOnlyCollection<string> ThirdParty { get; } = new[]
         {
-            "https://icons8.com"
+            "Icons from https://icons8.com"
         };
 
         private void InitializeComponent()

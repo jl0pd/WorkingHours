@@ -13,12 +13,32 @@
     </Style>
   </UserControl.Styles>
   <DockPanel>
-    <DockPanel DockPanel.Dock="Bottom">
-      <Button Content="Pin" Command="{Binding $parent[Window].DataContext.Pin}" />
-      <Button Content="Show Elapsed" Command="{Binding $parent[Window].DataContext.ShowElapsed}"/>
-      <Button Content="Settings" Command="{Binding $parent[Window].DataContext.ShowSettings}"/>
-      <Button  Content="Add" Command="{Binding $parent[Window].DataContext.AddItem}" />
-    </DockPanel>
+    <UniformGrid Rows="1" DockPanel.Dock="Bottom">
+      <UniformGrid.Styles>
+        <Style Selector="Button">
+          <Setter Property="BorderThickness" Value="1" />
+          <Setter Property="BorderBrush" Value="Gray" />
+          <Setter Property="Margin" Value="0" />
+          <Setter Property="MaxWidth" Value="100" />
+          <Setter Property="MaxHeight" Value="30" />
+        </Style>
+      </UniformGrid.Styles>
+      <Button Command="{Binding $parent[Window].DataContext.ShowSettings}">
+        <Image Source="avares://WorkingHours/Assets/icons8-settings-50.png" />
+      </Button>
+
+      <Button Command="{Binding $parent[Window].DataContext.Pin}">
+        <Image Source="avares://WorkingHours/Assets/icons8-pin-50.png" />
+      </Button>
+
+      <Button Command="{Binding $parent[Window].DataContext.ShowElapsed}">
+        <Image Source="avares://WorkingHours/Assets/icons8-clock-32.png" />
+      </Button>
+
+      <Button  Command="{Binding $parent[Window].DataContext.AddItem}" DockPanel.Dock="Right">
+        <Image Source="avares://WorkingHours/Assets/icons8-plus-32.png" />
+      </Button>
+    </UniformGrid>
     <ListBox x:Name="MainListBox" Items="{Binding Items}"
         SelectionMode="Multiple"
         ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
