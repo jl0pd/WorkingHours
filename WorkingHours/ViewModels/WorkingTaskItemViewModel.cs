@@ -23,6 +23,8 @@ namespace WorkingHours.ViewModels
 
         private Timer Timer { get; } = new Timer(Second);
 
+        public WorkingTaskItemViewModel() : this(new WorkingTask("Test")) { }
+
         public WorkingTaskItemViewModel(WorkingTask task)
         {
             Task = task;
