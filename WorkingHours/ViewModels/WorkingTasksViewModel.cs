@@ -4,6 +4,9 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using DynamicData;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.DTO;
@@ -20,7 +23,6 @@ namespace WorkingHours.ViewModels
         {
             Items = new ObservableCollection<WorkingTaskItemViewModel>();
 
-
             Items.CollectionChanged += (sender, e) =>
             {
                 switch (e.Action)
@@ -30,12 +32,21 @@ namespace WorkingHours.ViewModels
                     {
                         item?.OnCancelClick.Subscribe(async t =>
                         {
+                            Window? parentWindow = Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
+                                ? desktop.MainWindow
+                                : null;
+
                             var msg = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
                             {
                                 ContentMessage = "Remove task?",
                                 ButtonDefinitions = ButtonEnum.YesNo
                             });
-                            ButtonResult res = await msg.Show();
+
+
+                            ButtonResult res = await (parentWindow != null
+                                ? msg.ShowDialog(parentWindow)
+                                : msg.Show());
+
                             if (res == ButtonResult.Yes)
                             {
                                 Items.Remove(t);
