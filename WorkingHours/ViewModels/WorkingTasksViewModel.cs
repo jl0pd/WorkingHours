@@ -38,7 +38,7 @@ namespace WorkingHours.ViewModels
 
                             var msg = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
                             {
-                                ContentMessage = "Remove task?",
+                                ContentMessage = $"Remove task '{item.Task.Name}'?",
                                 ButtonDefinitions = ButtonEnum.YesNo
                             });
 
