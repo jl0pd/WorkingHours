@@ -29,6 +29,13 @@ namespace WorkingHours.ViewModels
             Content = vm;
         }
 
+        public void ShowSettings()
+        {
+            var vm = new SettingsPanelViewModel();
+            vm.Back.Take(1).Subscribe(_ => Content = List);
+            Content = vm;
+        }
+
         public void AddItem()
         {
             var vm = new AddTaskViewModel();

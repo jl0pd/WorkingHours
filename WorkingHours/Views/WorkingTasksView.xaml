@@ -7,11 +7,17 @@
              xmlns:vms="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
              x:Class="WorkingHours.Views.WorkingTasksView">
+  <UserControl.Styles>
+    <Style Selector="Button">
+      <Setter Property="FontSize" Value="14" />
+    </Style>
+  </UserControl.Styles>
   <DockPanel>
     <DockPanel DockPanel.Dock="Bottom">
-      <Button Content="Pin" Command="{Binding $parent[Window].DataContext.Pin}" FontSize="14" />
-      <Button Content="Show Elapsed" Command="{Binding $parent[Window].DataContext.ShowElapsed}" FontSize="14"/>
-      <Button  Content="Add" Command="{Binding $parent[Window].DataContext.AddItem}" FontSize="14" />
+      <Button Content="Pin" Command="{Binding $parent[Window].DataContext.Pin}" />
+      <Button Content="Show Elapsed" Command="{Binding $parent[Window].DataContext.ShowElapsed}"/>
+      <Button Content="Settings" Command="{Binding $parent[Window].DataContext.ShowSettings}"/>
+      <Button  Content="Add" Command="{Binding $parent[Window].DataContext.AddItem}" />
     </DockPanel>
     <ListBox x:Name="MainListBox" Items="{Binding Items}"
         SelectionMode="Multiple"

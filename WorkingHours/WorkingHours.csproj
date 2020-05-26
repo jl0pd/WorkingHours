@@ -14,13 +14,17 @@
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
     <ItemGroup>
+      <AvaloniaResource Remove="Views\AboutWindow.xaml" />
       <AvaloniaResource Remove="Views\AddTaskView.xaml" />
+      <AvaloniaResource Remove="Views\SettingsPanelView.xaml" />
       <AvaloniaResource Remove="Views\TotalElapsedView.xaml" />
       <AvaloniaResource Remove="Views\WorkingTaskItemView.xaml" />
       <AvaloniaResource Remove="Views\WorkingTasksView.xaml" />
     </ItemGroup>
     <ItemGroup>
+      <None Remove="Views\AboutWindow.xaml" />
       <None Remove="Views\AddTaskView.xaml" />
+      <None Remove="Views\SettingsPanelView.xaml" />
       <None Remove="Views\TotalElapsedView.xaml" />
       <None Remove="Views\WorkingTaskItemView.xaml" />
       <None Remove="Views\WorkingTasksView.xaml" />
@@ -51,5 +55,20 @@
       <EmbeddedResource Include="Views\TotalElapsedView.xaml">
         <Generator>MSBuild:Compile</Generator>
       </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\AboutWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\SettingsPanelView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\SettingsPanelView.xaml.cs">
+        <DependentUpon>SettingsPanelView.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

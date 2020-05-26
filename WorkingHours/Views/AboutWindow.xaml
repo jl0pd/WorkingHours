@@ -1,0 +1,19 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
+        x:Class="WorkingHours.Views.AboutWindow"
+        Width="250" Height="250"
+        Title="AboutWindow">
+  <DockPanel>
+    <TextBlock Text="ThirdParty" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="18" DockPanel.Dock="Top"/>
+    <ListBox Name="ThirdPartyListBox" ScrollViewer.VerticalScrollBarVisibility="Visible">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <TextBox Text="{Binding}" IsReadOnly="True" />
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </DockPanel>
+</Window>
