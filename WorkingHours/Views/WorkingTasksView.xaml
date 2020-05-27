@@ -7,11 +7,6 @@
              xmlns:vms="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
              x:Class="WorkingHours.Views.WorkingTasksView">
-  <UserControl.Styles>
-    <Style Selector="Button">
-      <Setter Property="FontSize" Value="14" />
-    </Style>
-  </UserControl.Styles>
   <DockPanel>
     <UniformGrid Rows="1" DockPanel.Dock="Bottom">
       <UniformGrid.Styles>
@@ -23,11 +18,11 @@
         </Style>
       </UniformGrid.Styles>
       <Button Command="{Binding $parent[Window].DataContext.ShowSettings}">
-        <Image Source="avares://WorkingHours/Assets/icons8-settings-50.png" />
+        <Image Source="avares://WorkingHours/Assets/icons8-settings-32.png" />
       </Button>
 
       <Button Command="{Binding $parent[Window].DataContext.Pin}">
-        <Image Source="avares://WorkingHours/Assets/icons8-pin-50.png" />
+        <Image Source="avares://WorkingHours/Assets/icons8-pin-32.png" />
       </Button>
 
       <Button Command="{Binding $parent[Window].DataContext.ShowElapsed}">
@@ -38,14 +33,6 @@
         <Image Source="avares://WorkingHours/Assets/icons8-plus-32.png" />
       </Button>
     </UniformGrid>
-    <ListBox x:Name="MainListBox" Items="{Binding Items}"
-        SelectionMode="Multiple"
-        ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-      <ListBox.ItemTemplate>
-        <DataTemplate>
-          <views:WorkingTaskItemView DataContext="{Binding}" />
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+    <ListBox Items="{Binding Items}" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Visible" />
   </DockPanel>
 </UserControl>

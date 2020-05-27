@@ -8,19 +8,25 @@
 
   <Border Margin="1" BorderBrush="WhiteSmoke" BorderThickness="1">
     <DockPanel>
-      <Button Command="{Binding OnCancelClick}"
-              Width="26" Height="26" Margin="1" DockPanel.Dock="Right">
+      <DockPanel.Styles>
+        <Style Selector="Button">
+          <Setter Property="Margin" Value="1" />
+          <Setter Property="Width" Value="26" />
+          <Setter Property="Height" Value="26" />
+          <Setter Property="MaxWidth" Value="26" />
+          <Setter Property="MaxHeight" Value="26" />
+        </Style>
+      </DockPanel.Styles>
+      <Button Command="{Binding OnCancelClick}" DockPanel.Dock="Right">
         <Canvas Width="26" Height="26">
           <Line StartPoint="5 5" EndPoint="21 21" Stroke="DarkRed" StrokeThickness="3"/>
           <Line StartPoint="21 5" EndPoint="5 21" Stroke="DarkRed" StrokeThickness="3"/>
         </Canvas>
       </Button>
-      <Button Command="{Binding OnStopClick}"
-              Width="26" Height="26" Margin="1" DockPanel.Dock="Right">
+      <Button Command="{Binding OnStopClick}" DockPanel.Dock="Right">
         <Rectangle Width="18" Height="18" Fill="Yellow"/>
       </Button>
-      <Button Command="{Binding OnStartClick}"
-              Width="26" Height="26" Margin="1" DockPanel.Dock="Right">
+      <Button Command="{Binding OnStartClick}" DockPanel.Dock="Right">
         <Canvas Width="26" Height="26">
           <Polygon Points="5,5 21,13 5,21" Fill="Green" Stroke="Green" Width="26" />
         </Canvas>
@@ -32,8 +38,7 @@
             Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}"
             TextWrapping="NoWrap" />
       </UniformGrid>
-      <TextBlock Margin="5 5 0 5" VerticalAlignment="Center"
-          Text="{Binding Task.Name}" TextWrapping="Wrap" />
+      <TextBlock Margin="5 5 0 5" VerticalAlignment="Center" Text="{Binding Task.Name}" TextWrapping="Wrap" />
     </DockPanel>
   </Border>
 </UserControl>

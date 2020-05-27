@@ -4,21 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="450"
              x:Class="WorkingHours.Views.TotalElapsedView">
+  <UserControl.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style Selector="Button">
+      <Setter Property="FontSize" Value="14" />
+    </Style>
+  </UserControl.Styles>
   <DockPanel>
     <UniformGrid Rows="1" DockPanel.Dock="Bottom">
-      <Button Content="Back" Command="{Binding Back}" FontSize="14"/>
+      <Button Content="Back" Command="{Binding Back}" />
     </UniformGrid>
     <DockPanel DockPanel.Dock="Bottom" Background="DarkCyan" Height="26">
       <TextBlock Text="{Binding TotalWorkTime, StringFormat=Elapsed: \{0:hh\\.mm\\.ss\}}" 
-                 FontSize="14" VerticalAlignment="Center" Margin="5 0 0 0" />
+                 VerticalAlignment="Center" Margin="5 0 0 0" />
     </DockPanel>
     <ListBox Items="{Binding Tasks}">
       <ListBox.ItemTemplate>
         <DataTemplate>
           <Border BorderBrush="White" BorderThickness="1">
             <DockPanel Margin="3">
-              <TextBlock Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}" FontSize="14" DockPanel.Dock="Right"/>
-              <TextBlock Text="{Binding Name}" FontSize="14" DockPanel.Dock="Left"/>
+              <TextBlock Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}" DockPanel.Dock="Right"/>
+              <TextBlock Text="{Binding Name}" DockPanel.Dock="Left"/>
             </DockPanel>
           </Border>
         </DataTemplate>
