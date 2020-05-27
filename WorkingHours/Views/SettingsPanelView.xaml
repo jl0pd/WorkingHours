@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
         x:Class="WorkingHours.Views.SettingsPanelView">
   <DockPanel>
-    <Button Content="Back" Command="{Binding Back}" DockPanel.Dock="Bottom"/>
+    <Button Content="Back" FontSize="14" Command="{Binding Back}" DockPanel.Dock="Bottom"/>
     <ListBox DockPanel.Dock="Top" BorderThickness="0">
        <Button Content="About" Command="{Binding ShowAbout}"/>
       <ListBox.Styles>
