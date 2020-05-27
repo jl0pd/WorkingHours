@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
-using Serilog;
 using WorkingHours.ViewModels;
 
 namespace WorkingHours.Views
