@@ -15,21 +15,17 @@
           <Setter Property="Height" Value="26" />
           <Setter Property="MaxWidth" Value="26" />
           <Setter Property="MaxHeight" Value="26" />
+          <Setter Property="Padding" Value="0" />
         </Style>
       </DockPanel.Styles>
-      <Button Command="{Binding OnCancelClick}" DockPanel.Dock="Right">
-        <Canvas Width="26" Height="26">
-          <Line StartPoint="5 5" EndPoint="21 21" Stroke="DarkRed" StrokeThickness="3"/>
-          <Line StartPoint="21 5" EndPoint="5 21" Stroke="DarkRed" StrokeThickness="3"/>
-        </Canvas>
+      <Button Command="{Binding OnCancelClick}" DockPanel.Dock="Right" >
+        <Image Source="avares://WorkingHours/Assets/icons8-delete-bin-16.png" />
       </Button>
-      <Button Command="{Binding OnStopClick}" DockPanel.Dock="Right">
-        <Rectangle Width="18" Height="18" Fill="Yellow"/>
+      <Button Command="{Binding OnStopClick}" DockPanel.Dock="Right" >
+        <Image Source="avares://WorkingHours/Assets/icons8-stop-32.png" />
       </Button>
-      <Button Command="{Binding OnStartClick}" DockPanel.Dock="Right">
-        <Canvas Width="26" Height="26">
-          <Polygon Points="5,5 21,13 5,21" Fill="Green" Stroke="Green" Width="26" />
-        </Canvas>
+      <Button Command="{Binding OnStartClick}" DockPanel.Dock="Right" >
+        <Image Source="avares://WorkingHours/Assets/icons8-play-32.png" />
       </Button>
       <UniformGrid DockPanel.Dock="Right" Columns="1">
         <TextBlock Margin="2" VerticalAlignment="Center" HorizontalAlignment="Center"
