@@ -36,6 +36,7 @@ namespace WorkingHours.ViewModels
                 Task.Start();
                 Timer.Start();
                 this.RaisePropertyChanged(nameof(WorkTimeString));
+                return this;
             });
 
             OnStopClick = ReactiveCommand.Create(() =>
@@ -43,6 +44,7 @@ namespace WorkingHours.ViewModels
                 Task.Stop();
                 Timer.Stop();
                 this.RaisePropertyChanged(nameof(WorkTimeString));
+                return this;
             });
 
             OnCancelClick = ReactiveCommand.Create(() => this);
@@ -50,8 +52,8 @@ namespace WorkingHours.ViewModels
 
         public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnCancelClick { get; }
 
-        public ReactiveCommand<Unit, Unit> OnStartClick { get; }
+        public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnStartClick { get; }
 
-        public ReactiveCommand<Unit, Unit> OnStopClick { get; }
+        public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnStopClick { get; }
     }
 }

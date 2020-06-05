@@ -1,6 +1,8 @@
-﻿using Avalonia;
+﻿using System.Reactive.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using WorkingHours.ViewModels;
 
@@ -14,9 +16,9 @@ namespace WorkingHours.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
-            Button button = this.FindControl<Button>("CloseButton");
-            button.Click += (sender, e) => Close();
         }
+
+        private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
 
         public MiniMainWindow(WorkingTaskItemViewModel workingTask)
         : this()
@@ -24,6 +26,10 @@ namespace WorkingHours.Views
             DockPanel a = this.FindControl<DockPanel>("DockPanel");
             IControl view = new ViewLocator().Build(workingTask);
             view.DataContext = workingTask;
+
+            Observable
+                .Merge(workingTask.OnCancelClick, workingTask.OnStopClick)
+                .ForEachAsync(_ => Close());
             a.Children.Add(view);
         }
 
