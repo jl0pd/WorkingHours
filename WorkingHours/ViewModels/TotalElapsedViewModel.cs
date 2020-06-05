@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Reactive;
 using ReactiveUI;
@@ -12,9 +11,7 @@ namespace WorkingHours.ViewModels
     {
         public TotalElapsedViewModel(IEnumerable<WorkingTask> enumerable)
         {
-            Tasks = enumerable.GroupBy(t => t.Name).Select(g => new WorkingTaskGroup(g, g.Key)).ToImmutableArray();
-
-            Back = ReactiveCommand.Create(() => { });
+            Tasks = Array.AsReadOnly(enumerable.GroupBy(t => t.Name).Select(g => new WorkingTaskGroup(g, g.Key)).ToArray());
         }
 
         public TimeSpan TotalWorkTime => Tasks.Any()
@@ -23,7 +20,7 @@ namespace WorkingHours.ViewModels
 
         private IReadOnlyList<WorkingTaskGroup> Tasks { get; }
 
-        public ReactiveCommand<Unit, Unit> Back { get; }
+        public ReactiveCommand<Unit, Unit> Back { get; } = ReactiveCommand.Create(() => { });
 
         private class WorkingTaskGroup
         {
