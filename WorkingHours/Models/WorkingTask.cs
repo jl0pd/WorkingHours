@@ -16,30 +16,30 @@ namespace WorkingHours.Models
         public TimeSpan Elapsed => CurrentState switch
         {
             State.NotStarted => TimeSpan.Zero,
-            State.Completed => EndTime - StartTime,
-            State.Started => DateTime.Now - StartTime,
+            State.Completed => EndTime!.Value - StartTime!.Value,
+            State.Started => DateTime.Now - StartTime!.Value,
             _ => throw new NotImplementedException()
         };
 
-        public DateTime StartTime { get; private set; }
+        public DateTime? StartTime { get; private set; }
 
-        public DateTime EndTime { get; private set; }
+        public DateTime? EndTime { get; private set; }
 
         public void Start()
         {
             CurrentState = State.Started;
-            StartTime = DateTime.Now;
+            StartTime ??= DateTime.Now;
         }
 
         public void Stop()
         {
             CurrentState = State.Completed;
-            EndTime = DateTime.Now;
+            EndTime ??= DateTime.Now;
         }
 
         public void Cancel()
         {
-            EndTime = DateTime.Now;
+            EndTime ??= DateTime.Now;
             CurrentState = State.Canceled;
         }
     }
