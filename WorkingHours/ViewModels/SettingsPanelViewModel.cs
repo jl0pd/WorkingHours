@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive;
-using System.Text;
+﻿using System.Reactive;
 using ReactiveUI;
 using WorkingHours.Views;
 
@@ -9,9 +6,7 @@ namespace WorkingHours.ViewModels
 {
     class SettingsPanelViewModel : ViewModelBase
     {
-        public SettingsPanelViewModel() => Back = ReactiveCommand.Create(() => { });
-
-        public ReactiveCommand<Unit, Unit> Back { get; }
+        public ReactiveCommand<Unit, Unit> Back { get; } = ReactiveCommand.Create(() => { });
 
         public void ShowAbout() => new AboutWindow().Show();
     }
