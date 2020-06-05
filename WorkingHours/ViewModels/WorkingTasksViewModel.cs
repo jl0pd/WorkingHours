@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Reactive.Linq;
 using Avalonia;
@@ -9,54 +7,45 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using DynamicData;
 using MessageBox.Avalonia;
+using MessageBox.Avalonia.BaseWindows;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
+using ReactiveUI;
 using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
 {
     public class WorkingTasksViewModel : ViewModelBase
     {
-        public ObservableCollection<WorkingTaskItemViewModel> Items { get; }
+        public SourceList<WorkingTaskItemViewModel> WorkingTaskItemViewModels { get; } = new SourceList<WorkingTaskItemViewModel>();
+
+        private IEnumerable<WorkingTaskItemViewModel> Items => WorkingTaskItemViewModels.Items;
 
         public WorkingTasksViewModel(IEnumerable<WorkingTask> items)
         {
-            Items = new ObservableCollection<WorkingTaskItemViewModel>();
-
-            Items.CollectionChanged += (sender, e) =>
+            WorkingTaskItemViewModels.Connect().OnItemAdded(vm => vm.OnCancelClick.Subscribe(async item =>
             {
-                switch (e.Action)
+                Window? parentWindow = 
+                    Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
+                        ? desktop.MainWindow
+                        : null;
+
+                IMsBoxWindow<ButtonResult> msgBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {
-                case NotifyCollectionChangedAction.Add:
-                    foreach (WorkingTaskItemViewModel? item in e.NewItems)
-                    {
-                        item?.OnCancelClick.Subscribe(async t =>
-                        {
-                            Window? parentWindow = Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
-                                ? desktop.MainWindow
-                                : null;
+                    ContentMessage = $"Remove task '{item.Task.Name}'?",
+                    ButtonDefinitions = ButtonEnum.YesNo
+                });
 
-                            var msg = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
-                            {
-                                ContentMessage = $"Remove task '{item.Task.Name}'?",
-                                ButtonDefinitions = ButtonEnum.YesNo
-                            });
+                ButtonResult res = await (parentWindow == null ? msgBox.Show() : msgBox.ShowDialog(parentWindow));
 
-                            ButtonResult res = await (parentWindow != null
-                                ? msg.ShowDialog(parentWindow)
-                                : msg.Show());
-
-                            if (res == ButtonResult.Yes)
-                            {
-                                Items.Remove(t);
-                            }
-                        });
-                    }
-                    break;
+                if (res == ButtonResult.Yes)
+                {
+                    WorkingTaskItemViewModels.Remove(item);
+                    this.RaisePropertyChanged(nameof(Items));
                 }
-            };
+            })).Subscribe();
 
-            Items.AddRange(items.Select(item => new WorkingTaskItemViewModel(item)));
+            WorkingTaskItemViewModels.AddRange(items.Select(item => new WorkingTaskItemViewModel(item)));
         }
     }
 }

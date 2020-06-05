@@ -1,10 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using ReactiveUI;
+using DynamicData;
+using ReactiveUI.Fody.Helpers;
 using WorkingHours.Models;
 using WorkingHours.Views;
 
@@ -17,15 +17,11 @@ namespace WorkingHours.ViewModels
             Content = List = new WorkingTasksViewModel(Enumerable.Empty<WorkingTask>());
         }
 
-        public ViewModelBase Content
-        {
-            get => _content;
-            private set => this.RaiseAndSetIfChanged(ref _content, value);
-        }
+        [Reactive] public ViewModelBase Content { get; set; }
 
         public void ShowElapsed()
         {
-            var vm = new TotalElapsedViewModel(List.Items.Select(t => t.Task));
+            var vm = new TotalElapsedViewModel(List.WorkingTaskItemViewModels.Items.Select(t => t.Task));
             vm.Back.Take(1).Subscribe(u => Content = List);
             Content = vm;
         }
@@ -47,13 +43,13 @@ namespace WorkingHours.ViewModels
                 {
                     if (item != null)
                     {
-                        List.Items.Add(new WorkingTaskItemViewModel(item));
-                        new MiniMainWindow(List.Items.Last()).Show();
+                        var itemVm = new WorkingTaskItemViewModel(item);
+                        List.WorkingTaskItemViewModels.Add(itemVm);
+                        new MiniMainWindow(itemVm).Show();
                     }
                     Content = List;
                 });
             Content = vm;
-
         }
 
         public void Pin()
@@ -65,7 +61,5 @@ namespace WorkingHours.ViewModels
         }
 
         public WorkingTasksViewModel List { get; }
-
-        private ViewModelBase _content = null!;
     }
 }
