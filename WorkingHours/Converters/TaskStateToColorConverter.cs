@@ -9,7 +9,7 @@ using WorkingHours.Models;
 
 namespace WorkingHours.Converters
 {
-    internal class TaskStateToColorConverter : IValueConverter
+    public class TaskStateToColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

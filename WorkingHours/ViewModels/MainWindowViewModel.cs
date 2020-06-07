@@ -55,7 +55,7 @@ namespace WorkingHours.ViewModels
             Content = vm;
         }
 
-        public void Pin()
+        public static void Pin()
         {
             Control? mainWindow = WindowingUtils.GetMainWindow();
             if (mainWindow is Window window)

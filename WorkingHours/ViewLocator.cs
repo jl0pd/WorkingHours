@@ -1,6 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using WorkingHours.Utils;
 using WorkingHours.ViewModels;
 
 namespace WorkingHours
@@ -11,9 +12,11 @@ namespace WorkingHours
 
         public IControl Build(object data)
         {
+            data = data.ThrowIfNull(nameof(data));
+
             IControl? ret = null;
             
-            string? name = data.GetType().FullName?.Replace("ViewModel", "View");
+            string? name = data.GetType().FullName?.Replace("ViewModel", "View", StringComparison.InvariantCulture);
             if (name != null)
             {
                 var type = Type.GetType(name);

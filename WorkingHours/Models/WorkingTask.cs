@@ -34,12 +34,12 @@ namespace WorkingHours.Models
         public void Stop()
         {
             CurrentState = State.Completed;
-            EndTime ??= DateTime.Now;
+            StartTime ??= EndTime ??= DateTime.Now;
         }
 
         public void Cancel()
         {
-            EndTime ??= DateTime.Now;
+            StartTime ??= EndTime ??= DateTime.Now;
             CurrentState = State.Canceled;
         }
     }

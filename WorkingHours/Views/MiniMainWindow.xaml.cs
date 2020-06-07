@@ -1,9 +1,11 @@
-﻿using System.Reactive.Linq;
+﻿using System;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using WorkingHours.Utils;
 using WorkingHours.ViewModels;
 
 namespace WorkingHours.Views
@@ -20,7 +22,7 @@ namespace WorkingHours.Views
 
         private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
 
-        public MiniMainWindow(WorkingTaskItemViewModel workingTask)
+        internal MiniMainWindow(WorkingTaskItemViewModel workingTask)
         : this()
         {
             DockPanel a = this.FindControl<DockPanel>("DockPanel");
@@ -35,6 +37,8 @@ namespace WorkingHours.Views
 
         protected override void OnPointerMoved(PointerEventArgs e)
         {
+            e = e.ThrowIfNull(nameof(e));
+
             if (IsPointerPressed && IsPointerOver)
             {
                 Position = ToPixelPoint(GetAbsoluteCoords(e)) - PressPoint;
@@ -56,6 +60,8 @@ namespace WorkingHours.Views
 
         protected override void OnPointerPressed(PointerPressedEventArgs e)
         {
+            e = e.ThrowIfNull(nameof(e));
+
             PressPoint = ToPixelPoint(e.GetPosition(this));
             IsPointerPressed = true;
             base.OnPointerPressed(e);

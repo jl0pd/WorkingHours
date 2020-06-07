@@ -32,7 +32,7 @@ namespace WorkingHours.ViewModels
                     ButtonDefinitions = ButtonEnum.YesNo
                 });
 
-                ButtonResult res = await (WindowingUtils.GetMainWindow() is Window parentWindow ? msgBox.ShowDialog(parentWindow) : msgBox.Show());
+                ButtonResult res = await (WindowingUtils.GetMainWindow() is Window parentWindow ? msgBox.ShowDialog(parentWindow) : msgBox.Show()).ConfigureAwait(false);
 
                 if (res == ButtonResult.Yes)
                 {
