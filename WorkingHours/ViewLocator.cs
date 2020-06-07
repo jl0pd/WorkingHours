@@ -11,22 +11,21 @@ namespace WorkingHours
 
         public IControl Build(object data)
         {
-            var name = data.GetType().FullName.Replace("ViewModel", "View");
-            var type = Type.GetType(name);
+            IControl? ret = null;
+            
+            string? name = data.GetType().FullName?.Replace("ViewModel", "View");
+            if (name != null)
+            {
+                var type = Type.GetType(name);
+                if (type != null)
+                {
+                    ret = (IControl?)Activator.CreateInstance(type);
+                }
+            }
 
-            if (type != null)
-            {
-                return (Control)Activator.CreateInstance(type);
-            }
-            else
-            {
-                return new TextBlock { Text = "Not Found: " + name };
-            }
+            return ret ?? new TextBlock { Text = "Not Found: " + name };
         }
 
-        public bool Match(object data)
-        {
-            return data is ViewModelBase;
-        }
+        public bool Match(object data) => data is ViewModelBase;
     }
 }
