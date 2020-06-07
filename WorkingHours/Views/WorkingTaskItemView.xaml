@@ -2,11 +2,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="40"
+             xmlns:m="clr-namespace:WorkingHours.Models;assembly=WorkingHours"
+             xmlns:c="clr-namespace:WorkingHours.Converters;assembly=WorkingHours"
              x:Class="WorkingHours.Views.WorkingTaskItemView"
              MinWidth="150">
-
-  <Border Margin="1" BorderBrush="WhiteSmoke" BorderThickness="1">
+  <UserControl.Resources>
+    <c:TaskStateToColorConverter x:Key="taskState2Color" />
+  </UserControl.Resources>
+  <Border Margin="1" BorderBrush="WhiteSmoke" BorderThickness="1"
+          Background="{Binding State, Converter={StaticResource taskState2Color}}">
     <DockPanel>
       <DockPanel.Styles>
         <Style Selector="Button">
@@ -21,7 +25,7 @@
       <Button Command="{Binding OnCancelClick}" DockPanel.Dock="Right" >
         <Image Source="avares://WorkingHours/Assets/icons8-delete-bin-16.png" />
       </Button>
-      <Button Command="{Binding OnStopClick}" DockPanel.Dock="Right" >
+      <Button Command="{Binding OnStopClick}" DockPanel.Dock="Right">
         <Image Source="avares://WorkingHours/Assets/icons8-stop-32.png" />
       </Button>
       <Button Command="{Binding OnStartClick}" DockPanel.Dock="Right" >
