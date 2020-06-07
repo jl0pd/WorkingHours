@@ -9,7 +9,7 @@
         Topmost="True" HasSystemDecorations="False">
   <Border BorderThickness="1" BorderBrush="{DynamicResource ThemeAccentBrush}">
     <DockPanel x:Name="DockPanel">
-      <Button x:Name="CloseButton" MaxWidth="32" Padding="0" Click="OnCloseClick}">
+      <Button x:Name="CloseButton" MaxWidth="32" Padding="0" Click="OnCloseClick">
         <Image Source="avares://WorkingHours/Assets/icons8-cancel-32.png" />
       </Button>
     </DockPanel>
