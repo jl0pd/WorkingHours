@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 using DynamicData;
 using ReactiveUI.Fody.Helpers;
 using WorkingHours.Models;
+using WorkingHours.Utils;
 using WorkingHours.Views;
 
 namespace WorkingHours.ViewModels
@@ -37,7 +37,7 @@ namespace WorkingHours.ViewModels
         {
             var vm = new AddTaskViewModel();
 
-            Observable.Merge(vm.Add, vm.Cancel.Select(_ => (WorkingTask?)null))
+            Observable.Merge(vm.Add, vm.Cancel.Select<System.Reactive.Unit, WorkingTask?>(_ => null))
                 .Take(1)
                 .Subscribe(item =>
                 {
@@ -45,7 +45,10 @@ namespace WorkingHours.ViewModels
                     {
                         var itemVm = new WorkingTaskItemViewModel(item);
                         List.WorkingTaskItemViewModels.Add(itemVm);
-                        new MiniMainWindow(itemVm).Show();
+                        new MiniMainWindow(itemVm)
+                        {
+                            Owner = WindowingUtils.GetMainWindow() as Window // hope it will be fixed some day https://github.com/AvaloniaUI/Avalonia/issues/3254
+                        }.Show();
                     }
                     Content = List;
                 });
@@ -54,9 +57,10 @@ namespace WorkingHours.ViewModels
 
         public void Pin()
         {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            Control? mainWindow = WindowingUtils.GetMainWindow();
+            if (mainWindow is Window window)
             {
-                desktop.MainWindow.Topmost = !desktop.MainWindow.Topmost;
+                window.Topmost = !window.Topmost;
             }
         }
 

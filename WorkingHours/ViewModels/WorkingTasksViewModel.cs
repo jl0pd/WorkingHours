@@ -12,6 +12,7 @@ using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using ReactiveUI;
 using WorkingHours.Models;
+using WorkingHours.Utils;
 
 namespace WorkingHours.ViewModels
 {
@@ -25,18 +26,13 @@ namespace WorkingHours.ViewModels
         {
             WorkingTaskItemViewModels.Connect().OnItemAdded(vm => vm.OnCancelClick.Subscribe(async item =>
             {
-                Window? parentWindow = 
-                    Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop
-                        ? desktop.MainWindow
-                        : null;
-
                 IMsBoxWindow<ButtonResult> msgBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
                 {
                     ContentMessage = $"Remove task '{item.Task.Name}'?",
                     ButtonDefinitions = ButtonEnum.YesNo
                 });
 
-                ButtonResult res = await (parentWindow == null ? msgBox.Show() : msgBox.ShowDialog(parentWindow));
+                ButtonResult res = await (WindowingUtils.GetMainWindow() is Window parentWindow ? msgBox.ShowDialog(parentWindow) : msgBox.Show());
 
                 if (res == ButtonResult.Yes)
                 {
