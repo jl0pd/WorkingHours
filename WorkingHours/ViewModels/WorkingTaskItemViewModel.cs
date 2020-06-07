@@ -12,6 +12,8 @@ namespace WorkingHours.ViewModels
 
         private TimeSpan Elapsed => Task.Elapsed;
 
+        private WorkingTask.State State => Task.CurrentState;
+
         private string WorkTimeString => Task.CurrentState switch
         {
             WorkingTask.State.NotStarted => "? - ?",
@@ -36,6 +38,7 @@ namespace WorkingHours.ViewModels
                 Task.Start();
                 Timer.Start();
                 this.RaisePropertyChanged(nameof(WorkTimeString));
+                this.RaisePropertyChanged(nameof(State));
                 return this;
             });
 
@@ -44,10 +47,15 @@ namespace WorkingHours.ViewModels
                 Task.Stop();
                 Timer.Stop();
                 this.RaisePropertyChanged(nameof(WorkTimeString));
+                this.RaisePropertyChanged(nameof(State));
                 return this;
             });
 
-            OnCancelClick = ReactiveCommand.Create(() => this);
+            OnCancelClick = ReactiveCommand.Create(() =>
+            {
+                this.RaisePropertyChanged(nameof(State));
+                return this;
+            });
         }
 
         public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnCancelClick { get; }
