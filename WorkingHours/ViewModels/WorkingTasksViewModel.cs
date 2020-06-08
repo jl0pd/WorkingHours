@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using Avalonia.Controls;
 using DynamicData;
 using DynamicData.Binding;
-using MessageBox.Avalonia;
-using MessageBox.Avalonia.BaseWindows;
-using MessageBox.Avalonia.DTO;
-using MessageBox.Avalonia.Enums;
-using ReactiveUI;
 using WorkingHours.Models;
+using WorkingHours.Providers;
 using WorkingHours.Utils;
 
 namespace WorkingHours.ViewModels
@@ -32,15 +27,10 @@ namespace WorkingHours.ViewModels
             {
                 vm.OnCancelClick.Subscribe(async item =>
                 {
-                    IMsBoxWindow<ButtonResult> msgBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
-                    {
-                        ContentMessage = $"Remove task '{item.Task.Name}'?",
-                        ButtonDefinitions = ButtonEnum.YesNo
-                    });
+                    var res = await DialogProvider.ShowDialog($"Remove task '{item.Task.Name}'?", "Remove", 
+                        IDialogService.ButtonType.YesNo, WindowingUtils.GetMainWindow()).ConfigureAwait(true);
 
-                    ButtonResult res = await (WindowingUtils.GetMainWindow() is Window parentWindow ? msgBox.ShowDialog(parentWindow) : msgBox.Show()).ConfigureAwait(true);
-
-                    if (res == ButtonResult.Yes)
+                    if (res == IDialogService.DialogResult.Yes)
                     {
                         Items.Remove(item);
                     }

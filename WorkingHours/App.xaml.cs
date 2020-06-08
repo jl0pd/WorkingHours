@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
+using WorkingHours.Providers;
 using WorkingHours.ViewModels;
 using WorkingHours.Views;
 
@@ -32,11 +32,16 @@ namespace WorkingHours
             case ISingleViewApplicationLifetime singleView:
                 singleView.MainView = MainWindow;
                 break;
+            default:
+                Debug.Write(ApplicationLifetime);
+                break;
             }
 
             TaskScheduler.UnobservedTaskException += (sender, e) => OnUnhandledExceptionThrown(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (sender, e) => OnUnhandledExceptionThrown((Exception)e.ExceptionObject);
-            
+
+            DialogProvider.DialogService = new AvaloniaDialogService();
+
             base.OnFrameworkInitializationCompleted();
         }
 
