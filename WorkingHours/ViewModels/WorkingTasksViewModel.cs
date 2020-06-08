@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using DynamicData;
+using DynamicData.Binding;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.BaseWindows;
 using MessageBox.Avalonia.DTO;
@@ -18,30 +18,34 @@ namespace WorkingHours.ViewModels
 {
     public class WorkingTasksViewModel : ViewModelBase
     {
-        public SourceList<WorkingTaskItemViewModel> WorkingTaskItemViewModels { get; } = new SourceList<WorkingTaskItemViewModel>();
-
-        private IEnumerable<WorkingTaskItemViewModel> Items => WorkingTaskItemViewModels.Items;
+        public ObservableCollection<WorkingTaskItemViewModel> Items { get; }
 
         public WorkingTasksViewModel(IEnumerable<WorkingTask> items)
+        : this (items.Select(t => new WorkingTaskItemViewModel(t)))
         {
-            WorkingTaskItemViewModels.Connect().OnItemAdded(vm => vm.OnCancelClick.Subscribe(async item =>
+        }
+
+        public WorkingTasksViewModel(IEnumerable<WorkingTaskItemViewModel> viewModels)
+        {
+            Items = new ObservableCollection<WorkingTaskItemViewModel>(viewModels);
+            Items.ToObservableChangeSet().OnItemAdded(vm =>
             {
-                IMsBoxWindow<ButtonResult> msgBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                vm.OnCancelClick.Subscribe(async item =>
                 {
-                    ContentMessage = $"Remove task '{item.Task.Name}'?",
-                    ButtonDefinitions = ButtonEnum.YesNo
+                    IMsBoxWindow<ButtonResult> msgBox = MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams
+                    {
+                        ContentMessage = $"Remove task '{item.Task.Name}'?",
+                        ButtonDefinitions = ButtonEnum.YesNo
+                    });
+
+                    ButtonResult res = await (WindowingUtils.GetMainWindow() is Window parentWindow ? msgBox.ShowDialog(parentWindow) : msgBox.Show()).ConfigureAwait(true);
+
+                    if (res == ButtonResult.Yes)
+                    {
+                        Items.Remove(item);
+                    }
                 });
-
-                ButtonResult res = await (WindowingUtils.GetMainWindow() is Window parentWindow ? msgBox.ShowDialog(parentWindow) : msgBox.Show()).ConfigureAwait(false);
-
-                if (res == ButtonResult.Yes)
-                {
-                    WorkingTaskItemViewModels.Remove(item);
-                    this.RaisePropertyChanged(nameof(Items));
-                }
-            })).Subscribe();
-
-            WorkingTaskItemViewModels.AddRange(items.Select(item => new WorkingTaskItemViewModel(item)));
+            }).Subscribe();
         }
     }
 }

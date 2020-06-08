@@ -25,7 +25,7 @@
         <Image Source="avares://WorkingHours/Assets/icons8-pin-32.png" />
       </Button>
 
-      <Button Command="{Binding $parent[Window].DataContext.ShowElapsed}">
+      <Button Command="{Binding $parent[Window].DataContext.ShowElapsed}" IsVisible="{Binding !!Items.Count}">
         <Image Source="avares://WorkingHours/Assets/icons8-clock-32.png" />
       </Button>
 

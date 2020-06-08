@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
 using Avalonia.Controls;
-using DynamicData;
 using ReactiveUI.Fody.Helpers;
 using WorkingHours.Models;
 using WorkingHours.Utils;
@@ -21,7 +21,7 @@ namespace WorkingHours.ViewModels
 
         public void ShowElapsed()
         {
-            var vm = new TotalElapsedViewModel(List.WorkingTaskItemViewModels.Items.Select(t => t.Task));
+            var vm = new TotalElapsedViewModel(List.Items.Select(t => t.Task));
             vm.Back.Take(1).Subscribe(u => Content = List);
             Content = vm;
         }
@@ -37,14 +37,14 @@ namespace WorkingHours.ViewModels
         {
             var vm = new AddTaskViewModel();
 
-            Observable.Merge(vm.Add, vm.Cancel.Select<System.Reactive.Unit, WorkingTask?>(_ => null))
+            Observable.Merge(vm.Add, vm.Cancel.Select<Unit, WorkingTask?>(_ => null))
                 .Take(1)
                 .Subscribe(item =>
                 {
                     if (item != null)
                     {
                         var itemVm = new WorkingTaskItemViewModel(item);
-                        List.WorkingTaskItemViewModels.Add(itemVm);
+                        List.Items.Add(itemVm);
                         new MiniMainWindow(itemVm)
                         {
                             Owner = WindowingUtils.GetMainWindow() as Window // hope it will be fixed some day https://github.com/AvaloniaUI/Avalonia/issues/3254
