@@ -32,8 +32,6 @@ namespace WorkingHours
             case ISingleViewApplicationLifetime singleView:
                 singleView.MainView = MainWindow;
                 break;
-            default:
-                throw new NotImplementedException();
             }
 
             TaskScheduler.UnobservedTaskException += (sender, e) => OnUnhandledExceptionThrown(e.Exception);
