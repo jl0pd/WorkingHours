@@ -4,6 +4,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using WorkingHours.Logging;
+using WorkingHours.Logging.Serilog;
 using WorkingHours.Providers;
 using WorkingHours.ViewModels;
 using WorkingHours.Views;

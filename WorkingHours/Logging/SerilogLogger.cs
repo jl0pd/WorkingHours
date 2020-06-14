@@ -1,6 +1,6 @@
 ﻿using SLog = Serilog.Log;
 
-namespace WorkingHours.Logging
+namespace WorkingHours.Logging.Serilog
 {
     internal class SerilogLogger : ILogger
     {
