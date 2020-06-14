@@ -1,37 +1,41 @@
-﻿using System;
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
 using Serilog;
 
 namespace WorkingHours
 {
-    class Program
+    static class Program
     {
-
-        public static void ConfigureLogging()
+        public static AppBuilder ConfigureLogging(this AppBuilder builder)
         {
-            Log.Logger = 
+            string template = "{Timestamp:yyyy.MM.dd HH:mm:ss} | {Level:u5} | {Message:lj}{NewLine}{Exception}";
+
+            Log.Logger =
                 new LoggerConfiguration()
-                    .WriteTo.File("Logs/log-.log", rollingInterval: RollingInterval.Day)
+                    .MinimumLevel.Verbose()
+                    .WriteTo.File("Logs/log-.log", outputTemplate: template, rollingInterval: RollingInterval.Day)
+#if DEBUG
+                    .WriteTo.Console(outputTemplate: template)
+                    .WriteTo.Debug(outputTemplate: template)
+#endif
                     .CreateLogger();
-            Log.Information("No one listens to me!");
+
+            return builder;
         }
 
         // Initialization code. Don't use any Avalonia, third-party APIs or any
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
-        public static void Main(string[] args)
-        {
-            ConfigureLogging();
+        public static void Main(string[] args) => 
             BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
-        }
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
+                .LogToTrace()
+                .ConfigureLogging()
                 .UsePlatformDetect()
                 .LogToDebug()
                 .UseReactiveUI();

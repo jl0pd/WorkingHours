@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reactive;
@@ -8,6 +7,7 @@ using Avalonia.Controls;
 using ReactiveUI.Fody.Helpers;
 using WorkingHours.DataBase;
 using WorkingHours.DataBase.Models;
+using WorkingHours.Logging;
 using WorkingHours.Models;
 using WorkingHours.Utils;
 using WorkingHours.Views;
@@ -17,41 +17,36 @@ namespace WorkingHours.ViewModels
     internal class MainWindowViewModel : ViewModelBase
     {
         public MainWindowViewModel()
-        : this(Enumerable.Empty<WorkingTask>())
+        : this(false)
         {
         }
 
         public MainWindowViewModel(bool useDB)
         {
+            var tasks = Enumerable.Empty<WorkingTask>();
             if (useDB)
             {
                 DBContext = new WorkingContext();
+                tasks = DBContext
+                    !.WorkingTasks
+                    .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
+                    .Select(t => t.ToWorkingTask()).ToList();
+                Log.Info("Loaded {Tasks}", tasks);
+            }
 
-                Content = List = new WorkingTasksViewModel(
-                    DBContext
-                        .WorkingTasks
-                        .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
-                        .Select(t => t.ToWorkingTask())
-                );
-            }
-            else
-            {
-                Content = List = new WorkingTasksViewModel(Enumerable.Empty<WorkingTask>());
-            }
+            Content = List = new WorkingTasksViewModel(tasks);
         }
 
         public void Save()
         {
-            DBContext?.Attach(new WorkingDayDBModel(new WorkingDay(List.Items.Select(t => t.Task), DateTime.Today)));
-            DBContext?.SaveChanges();
+            if (!(DBContext is null))
+            {
+                DBContext.Attach(new WorkingDayDBModel(new WorkingDay(List.Items.Select(t => t.Task), DateTime.Today)));
+                DBContext.SaveChanges();
+            }
         }
 
         private WorkingContext? DBContext { get; }
-
-        public MainWindowViewModel(IEnumerable<WorkingTask> tasks)
-        {
-            Content = List = new WorkingTasksViewModel(tasks);
-        }
 
         [Reactive] public ViewModelBase Content { get; set; }
 
@@ -73,12 +68,14 @@ namespace WorkingHours.ViewModels
         {
             var vm = new AddTaskViewModel();
 
-            Observable.Merge(vm.Add, vm.Cancel.Select<Unit, WorkingTask?>(_ => null))
+            Observable
+                .Merge(vm.Add, vm.Cancel.Select<Unit, WorkingTask?>(_ => null))
                 .Take(1)
                 .Subscribe(item =>
                 {
                     if (item != null)
                     {
+                        Log.Info("Created item {@Item}", item);
                         var itemVm = new WorkingTaskItemViewModel(item);
                         List.Items.Add(itemVm);
                         new MiniMainWindow(itemVm)

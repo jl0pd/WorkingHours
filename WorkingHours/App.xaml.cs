@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Serilog;
+using WorkingHours.Logging;
 using WorkingHours.Providers;
 using WorkingHours.ViewModels;
 using WorkingHours.Views;
@@ -13,13 +12,12 @@ namespace WorkingHours
 {
     public class App : Application
     {
-        public override void Initialize()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
         public override void OnFrameworkInitializationCompleted()
         {
+            Log.Logger = new SerilogLogger();
+
             TaskScheduler.UnobservedTaskException += (sender, e) => OnUnhandledExceptionThrown(e.Exception);
             AppDomain.CurrentDomain.UnhandledException += (sender, e) => OnUnhandledExceptionThrown((Exception)e.ExceptionObject);
 
@@ -41,14 +39,13 @@ namespace WorkingHours
                 singleView.MainView = mainWindow;
                 break;
             default:
-                Debug.Write(ApplicationLifetime);
+                Log.Warn("Unhandled lifetime {ApplicationLifetime}", ApplicationLifetime);
                 break;
             }
-
 
             base.OnFrameworkInitializationCompleted();
         }
 
-        private void OnUnhandledExceptionThrown(Exception? e) => Log.Error($"Exception {e}");
+        private void OnUnhandledExceptionThrown(Exception? e) => Log.Fatal("{Exception}", e);
     }
 }
