@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WorkingHours.Models
 {
-    class WorkingDay
+    public class WorkingDay
     {
         public WorkingDay()
         : this(DateTime.Today)

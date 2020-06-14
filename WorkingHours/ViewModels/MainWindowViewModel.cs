@@ -1,20 +1,56 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using Avalonia.Controls;
 using ReactiveUI.Fody.Helpers;
+using WorkingHours.DataBase;
+using WorkingHours.DataBase.Models;
 using WorkingHours.Models;
 using WorkingHours.Utils;
 using WorkingHours.Views;
 
 namespace WorkingHours.ViewModels
 {
-    public class MainWindowViewModel : ViewModelBase
+    internal class MainWindowViewModel : ViewModelBase
     {
         public MainWindowViewModel()
+        : this(Enumerable.Empty<WorkingTask>())
         {
-            Content = List = new WorkingTasksViewModel(Enumerable.Empty<WorkingTask>());
+        }
+
+        public MainWindowViewModel(bool useDB)
+        {
+            if (useDB)
+            {
+                DBContext = new WorkingContext();
+
+                Content = List = new WorkingTasksViewModel(
+                    DBContext
+                        .WorkingTasks
+                        .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
+                        .Select(t => t.ToWorkingTask())
+                );
+            }
+            else
+            {
+                Content = List = new WorkingTasksViewModel(Enumerable.Empty<WorkingTask>());
+            }
+        }
+
+        public void Save()
+        {
+            DBContext?.Attach(new WorkingDayDBModel(new WorkingDay(List.Items.Select(t => t.Task), DateTime.Today)));
+            DBContext?.SaveChanges();
+        }
+
+        private WorkingContext? DBContext { get; }
+
+        public MainWindowViewModel(IEnumerable<WorkingTask> tasks)
+        {
+            Content = List = new WorkingTasksViewModel(tasks);
         }
 
         [Reactive] public ViewModelBase Content { get; set; }

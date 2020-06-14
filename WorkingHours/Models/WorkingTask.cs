@@ -11,14 +11,23 @@ namespace WorkingHours.Models
 
         public WorkingTask(string name) => Name = name;
 
+        public WorkingTask(string name, DateTime? startTime, DateTime? endTime, State state)
+        : this(name)
+        {
+            StartTime = startTime;
+            EndTime = endTime;
+            CurrentState = state;
+        }
+
+        public WorkingDay Day { get; }
+
         public string Name { get; }
 
         public TimeSpan Elapsed => CurrentState switch
         {
-            State.NotStarted => TimeSpan.Zero,
-            State.Completed => EndTime!.Value - StartTime!.Value,
             State.Started => DateTime.Now - StartTime!.Value,
-            _ => throw new NotImplementedException()
+            State.Completed => EndTime!.Value - StartTime!.Value,
+            _ => TimeSpan.Zero,
         };
 
         public DateTime? StartTime { get; private set; }
