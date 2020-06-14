@@ -9,17 +9,20 @@ namespace WorkingHours.Models
 
         public State CurrentState { get; private set; } = State.NotStarted;
 
-        public WorkingTask(string name) => Name = name;
+        public WorkingTask(string name)
+        : this(name, DateTime.Now)
+        {
+        }
 
-        public WorkingTask(string name, DateTime? startTime, DateTime? endTime, State state)
-        : this(name)
+        public WorkingTask(string name, DateTime created) => (Name, Created) = (name, created);
+
+        public WorkingTask(string name, DateTime? startTime, DateTime? endTime, DateTime created, State state)
+        : this(name, created)
         {
             StartTime = startTime;
             EndTime = endTime;
             CurrentState = state;
         }
-
-        public WorkingDay Day { get; }
 
         public string Name { get; }
 
@@ -29,6 +32,8 @@ namespace WorkingHours.Models
             State.Completed => EndTime!.Value - StartTime!.Value,
             _ => TimeSpan.Zero,
         };
+
+        public DateTime Created { get; }
 
         public DateTime? StartTime { get; private set; }
 

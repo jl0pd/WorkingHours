@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reactive;
@@ -23,30 +24,46 @@ namespace WorkingHours.ViewModels
 
         public MainWindowViewModel(bool useDB)
         {
-            var tasks = Enumerable.Empty<WorkingTask>();
-            if (useDB)
+            IEnumerable<WorkingTask>? tasks = null;
+            if (UseDB = useDB)
             {
-                DBContext = new WorkingContext();
-                tasks = DBContext
-                    !.WorkingTasks
-                    .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
-                    .Select(t => t.ToWorkingTask()).ToList();
+                using (var dbContext = new WorkingContext())
+                {
+                    tasks = dbContext
+                        .WorkingTasks
+                        .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
+                        .Select(t => t.ToWorkingTask()).ToList();
+                }
                 Log.Info("Loaded {Tasks}", tasks);
             }
 
-            Content = List = new WorkingTasksViewModel(tasks);
+            Content = List = new WorkingTasksViewModel(tasks ?? Enumerable.Empty<WorkingTask>());
         }
+
+        public bool UseDB { get; }
 
         public void Save()
         {
-            if (!(DBContext is null))
+            if (UseDB)
             {
-                DBContext.Attach(new WorkingDayDBModel(new WorkingDay(List.Items.Select(t => t.Task), DateTime.Today)));
-                DBContext.SaveChanges();
+                using var dbContext = new WorkingContext();
+
+                var workingDay = dbContext.WorkingDays.FirstOrDefault(d => d.Date == DateTime.Today);
+
+                var tasks = List.Items.Select(t => t.Task);
+
+                if (workingDay is null)
+                {
+                    dbContext.Add(new WorkingDayDBModel(new WorkingDay(tasks, DateTime.Today)));
+                }
+                else
+                {
+                    dbContext.UpdateRange(tasks.Select(t => new WorkingTaskDBModel(t)));
+                }
+
+                dbContext.SaveChanges();
             }
         }
-
-        private WorkingContext? DBContext { get; }
 
         [Reactive] public ViewModelBase Content { get; set; }
 

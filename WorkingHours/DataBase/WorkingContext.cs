@@ -19,6 +19,12 @@ namespace WorkingHours.DataBase
 
         public DbSet<WorkingTaskDBModel>? WorkingTasks { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<WorkingTaskDBModel>().HasKey(p => new { p.Created, p.WorkingTaskId });
+            base.OnModelCreating(modelBuilder);
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data source=WorkingHours.sqlite");

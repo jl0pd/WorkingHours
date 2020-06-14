@@ -15,23 +15,20 @@ namespace WorkingHours.DataBase.Models
 
         public WorkingDayDBModel(WorkingDay day)
         {
-            Date = day?.Date;
-            Tasks = day?.Tasks.Select(t => new WorkingTaskDBModel(t)).ToList();
+            day = day.ThrowIfNull(nameof(day));
+            Date = day.Date;
+            Tasks = day.Tasks.Select(t => new WorkingTaskDBModel(t)).ToList();
         }
 
         [Key] public int WorkingDayId { get; set; }
 
-        public DateTime? Date { get; set; }
+        public DateTime Date { get; set; }
 
         public ICollection<WorkingTaskDBModel>? Tasks { get; set; }
 
-        public WorkingDay ToWorkingDay()
-        {
-            DateTime date = Date.ThrowIfNull(nameof(Date));
-            return new WorkingDay(
-                Tasks?.Select(t => t.ToWorkingTask()) ?? Enumerable.Empty<WorkingTask>(),
-                date
-            );
-        }
+        public WorkingDay ToWorkingDay() 
+            => new WorkingDay(
+                Tasks?.Select(t => t.ToWorkingTask()) ?? Enumerable.Empty<WorkingTask>(), 
+                Date);
     }
 }
