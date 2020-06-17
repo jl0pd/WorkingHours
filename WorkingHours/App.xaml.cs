@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using WorkingHours.Logging;
@@ -23,8 +24,7 @@ namespace WorkingHours
             AppDomain.CurrentDomain.UnhandledException += (sender, e) => OnUnhandledExceptionThrown((Exception)e.ExceptionObject);
 
             DialogProvider.DialogService = new AvaloniaDialogService();
-
-            var mainVM = new MainWindowViewModel(useDB: true);
+            var mainVM = new MainWindowViewModel(useDB: !Design.IsDesignMode);
             var mainWindow = new MainWindow
             {
                 DataContext = mainVM,
