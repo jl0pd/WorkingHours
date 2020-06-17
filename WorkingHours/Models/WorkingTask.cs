@@ -48,7 +48,9 @@ namespace WorkingHours.Models
         public void Stop()
         {
             CurrentState = State.Completed;
-            StartTime ??= EndTime ??= DateTime.Now;
+            DateTime now = DateTime.Now;
+            StartTime ??= now;
+            EndTime ??= now;
         }
 
         public void Cancel()
