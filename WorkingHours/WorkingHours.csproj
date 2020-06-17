@@ -8,6 +8,8 @@
     <Authors>Denis Proshutinskii</Authors>
     <RepositoryUrl>https://github.com/jl0pd/WorkingHours</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Update="**\*.xaml.cs">

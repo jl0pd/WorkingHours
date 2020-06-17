@@ -12,7 +12,7 @@
     </Style>
   </Window.Styles>
   <DockPanel>
-    <Grid ColumnDefinitions="1*,2*" RowDefinitions="*,*,*" Margin="3" DockPanel.Dock="Top">
+    <Grid ColumnDefinitions="1*,2*" RowDefinitions="*,*,*,*" Margin="3" DockPanel.Dock="Top">
       <Grid.Styles>
         <Style Selector="TextBlock">
           <Setter Property="FontSize" Value="15" />
@@ -24,6 +24,8 @@
       <TextBox Text="vk.com/jl0pd" IsReadOnly="True" Grid.Row="1" Grid.Column="1" />
       <TextBlock Text="Source" Grid.Row="2" />
       <TextBox Text="github.com/jl0pd/WorkingHours" IsReadOnly="True" Grid.Column="1" Grid.Row="2" />
+      <TextBlock Text="Version" Grid.Row="3" />
+      <TextBox x:Name="VersionTextBox" IsReadOnly="True" Grid.Column="1" Grid.Row="3" />
     </Grid>
     <Separator BorderThickness="1" BorderBrush="WhiteSmoke" DockPanel.Dock="Top"/>
     <TextBlock Text="ThirdParty" HorizontalAlignment="Center" FontWeight="DemiBold" FontSize="16" DockPanel.Dock="Top"/>

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -15,6 +16,9 @@ namespace WorkingHours.Views
 #endif
             var lb = this.FindControl<ListBox>("ThirdPartyListBox");
             lb.Items = ThirdParty;
+
+            var tb = this.FindControl<TextBox>("VersionTextBox");
+            tb.Text = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "";
         }
 
         private IReadOnlyCollection<string> ThirdParty { get; } = new[]
