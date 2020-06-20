@@ -9,6 +9,8 @@ using WorkingHours.Models;
 using WorkingHours.Providers;
 using WorkingHours.Utils;
 
+using static WorkingHours.Models.IDialogService;
+
 namespace WorkingHours.ViewModels
 {
     public class WorkingTasksViewModel : ViewModelBase
@@ -27,10 +29,10 @@ namespace WorkingHours.ViewModels
             {
                 vm.OnCancelClick.Subscribe(async item =>
                 {
-                    var res = await DialogProvider.ShowDialog($"Remove task '{item.Task.Name}'?", "Remove", 
-                        IDialogService.ButtonType.YesNo, WindowingUtils.GetMainWindow()).ConfigureAwait(true);
+                    DialogResult res = await DialogProvider.ShowDialog($"Remove task '{item.Task.Name}'?", "Remove", 
+                        ButtonType.YesNo, WindowingUtils.GetMainWindow()).ConfigureAwait(true);
 
-                    if (res == IDialogService.DialogResult.Yes)
+                    if (res == DialogResult.Yes)
                     {
                         Items.Remove(item);
                     }
