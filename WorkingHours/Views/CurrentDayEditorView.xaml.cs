@@ -1,16 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Avalonia.ReactiveUI;
-using WorkingHours.ViewModels;
 
 namespace WorkingHours.Views
 {
-    public class WorkingTaskItemView : ReactiveUserControl<WorkingTaskItemViewModel>
+    public class CurrentDayEditorView : UserControl
     {
-        public WorkingTaskItemView()
+        public CurrentDayEditorView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         private void InitializeComponent()

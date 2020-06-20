@@ -7,11 +7,14 @@ using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
 {
-    class TotalElapsedViewModel : ViewModelBase
+    internal class TotalElapsedViewModel : ViewModelBase
     {
         public TotalElapsedViewModel(IEnumerable<WorkingTask> enumerable)
         {
-            Tasks = Array.AsReadOnly(enumerable.GroupBy(t => t.Name).Select(g => new WorkingTaskGroup(g, g.Key)).ToArray());
+            Tasks = Array
+                        .AsReadOnly(enumerable.GroupBy(t => t.Name)
+                        .Select(g => new WorkingTaskGroup(g, g.Key))
+                        .ToArray());
         }
 
         public TimeSpan TotalWorkTime => Tasks.Any()

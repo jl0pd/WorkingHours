@@ -23,7 +23,7 @@ namespace WorkingHours.Views
 
         private void OnCloseClick(object sender, RoutedEventArgs e) => Close();
 
-        internal MiniMainWindow(WorkingTaskItemViewModel workingTask)
+        internal MiniMainWindow(WorkingTaskViewModel workingTask)
         : this()
         {
             DockPanel a = this.FindControl<DockPanel>("DockPanel");

@@ -24,18 +24,18 @@ namespace WorkingHours.ViewModels
 
         public MainWindowViewModel(bool useDB)
         {
-            IEnumerable<WorkingTask>? tasks = null;
+            WorkingDay? days = null;
             if (UseDB = useDB)
             {
                 using var dbContext = new WorkingContext(true);
-                tasks = dbContext
-                        .WorkingTasks
-                        .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
-                        .Select(t => t.ToWorkingTask()).ToList();
-                Log.Info("Loaded {Tasks}", tasks);
+                days = dbContext
+                        .WorkingDays
+                        .Where(d => d.Date.AddDays(7) > DateTime.Today)
+                        .Select(d => d.ToWorkingDay()).First();
+                Log.Info("Loaded {Days}", days);
             }
 
-            Content = List = new WorkingTasksViewModel(tasks ?? Enumerable.Empty<WorkingTask>());
+            Content = List = new CurrentDayEditorViewModel(days);
         }
 
         public bool UseDB { get; }
@@ -46,20 +46,13 @@ namespace WorkingHours.ViewModels
             {
                 using var dbContext = new WorkingContext();
 
-                WorkingDayDBModel? workingDay = dbContext.WorkingDays.FirstOrDefault(d => d.Date == DateTime.Today);
+                WorkingDay? day = List.Model;
 
-                IEnumerable<WorkingTask>? tasks = List.Items.Select(t => t.Task);
-
-                if (workingDay is null)
+                if (!(day is null))
                 {
-                    dbContext.Add(new WorkingDayDBModel(new WorkingDay(tasks, DateTime.Today)));
+                    dbContext.Update(new WorkingDayDBModel(day));
+                    dbContext.SaveChanges();
                 }
-                else
-                {
-                    dbContext.UpdateRange(tasks.Select(t => new WorkingTaskDBModel(t)));
-                }
-
-                dbContext.SaveChanges();
             }
         }
 
@@ -67,7 +60,7 @@ namespace WorkingHours.ViewModels
 
         public void ShowElapsed()
         {
-            var vm = new TotalElapsedViewModel(List.Items.Select(t => t.Task));
+            var vm = new TotalElapsedViewModel(List.Tasks ?? Enumerable.Empty<WorkingTask>());
             vm.Back.Take(1).Subscribe(u => Content = List);
             Content = vm;
         }
@@ -91,8 +84,8 @@ namespace WorkingHours.ViewModels
                     if (item != null)
                     {
                         Log.Info("Created item {@Item}", item);
-                        var itemVm = new WorkingTaskItemViewModel(item);
-                        List.Items.Add(itemVm);
+                        var itemVm = new WorkingTaskViewModel(item);
+                        List.Tasks!.Add(item);
                         new MiniMainWindow(itemVm)
                         {
                             Owner = WindowingUtils.GetMainWindow() as Window // hope it will be fixed some day https://github.com/AvaloniaUI/Avalonia/issues/3254
@@ -112,6 +105,6 @@ namespace WorkingHours.ViewModels
             }
         }
 
-        public WorkingTasksViewModel List { get; }
+        public CurrentDayEditorViewModel List { get; }
     }
 }

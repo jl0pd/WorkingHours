@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="clr-namespace:WorkingHours.Models;assembly=WorkingHours"
              xmlns:c="clr-namespace:WorkingHours.Converters;assembly=WorkingHours"
-             x:Class="WorkingHours.Views.WorkingTaskItemView"
+             x:Class="WorkingHours.Views.WorkingTaskView"
              MinWidth="150">
   <UserControl.Resources>
     <c:TaskStateToColorConverter x:Key="taskState2Color" />

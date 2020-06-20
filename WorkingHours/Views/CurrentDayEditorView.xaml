@@ -6,7 +6,7 @@
              xmlns:views="clr-namespace:WorkingHours.Views;assembly=WorkingHours"
              xmlns:vms="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
-             x:Class="WorkingHours.Views.WorkingTasksView">
+             x:Class="WorkingHours.Views.CurrentDayEditorView">
   <DockPanel>
     <UniformGrid Rows="1" DockPanel.Dock="Bottom">
       <UniformGrid.Styles>

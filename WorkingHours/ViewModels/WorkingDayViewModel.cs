@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
-using DynamicData;
-using DynamicData.Binding;
 using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
@@ -12,6 +10,7 @@ namespace WorkingHours.ViewModels
     {
         public WorkingDayViewModel()
         {
+#if DEBUG
             if (Design.IsDesignMode)
             {
                 Model = new WorkingDay(new List<WorkingTask>
@@ -19,11 +18,12 @@ namespace WorkingHours.ViewModels
                     new WorkingTask(
                         "asd",
                         new DateTime(2020, 06, 05, 12, 14, 16),
-                        new DateTime(2020, 06, 05, 12, 24, 16),
+                        new DateTime(2020, 06, 05, 12, 24, 27),
                         new DateTime(2020, 12, 3, 1, 2, 3),
                         WorkingTask.State.Completed)
                 }, DateTime.Now);
             }
+#endif
         }
 
         public WorkingDayViewModel(WorkingDay day)

@@ -6,7 +6,7 @@ using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
 {
-    public class WorkingTaskItemViewModel : ViewModelBase
+    public class WorkingTaskViewModel : ViewModelBase<WorkingTask>
     {
         public WorkingTask Task { get; }
 
@@ -25,9 +25,9 @@ namespace WorkingHours.ViewModels
 
         private Timer Timer { get; } = new Timer(Second);
 
-        public WorkingTaskItemViewModel() : this(new WorkingTask("Test")) { }
+        public WorkingTaskViewModel() : this(new WorkingTask("Test")) { }
 
-        public WorkingTaskItemViewModel(WorkingTask task)
+        public WorkingTaskViewModel(WorkingTask task)
         {
             Task = task;
 
@@ -58,10 +58,10 @@ namespace WorkingHours.ViewModels
             });
         }
 
-        public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnCancelClick { get; }
+        public ReactiveCommand<Unit, WorkingTaskViewModel> OnCancelClick { get; }
 
-        public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnStartClick { get; }
+        public ReactiveCommand<Unit, WorkingTaskViewModel> OnStartClick { get; }
 
-        public ReactiveCommand<Unit, WorkingTaskItemViewModel> OnStopClick { get; }
+        public ReactiveCommand<Unit, WorkingTaskViewModel> OnStopClick { get; }
     }
 }

@@ -1,14 +1,16 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using WorkingHours.ViewModels;
 
 namespace WorkingHours.Views
 {
-    public class WorkingTasksView : UserControl
+    public class WorkingTaskView : ReactiveUserControl<WorkingTaskViewModel>
     {
-        public WorkingTasksView()
+        public WorkingTaskView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void InitializeComponent()

@@ -4,7 +4,7 @@ using WorkingHours.Views;
 
 namespace WorkingHours.ViewModels
 {
-    class SettingsPanelViewModel : ViewModelBase
+    internal class SettingsPanelViewModel : ViewModelBase
     {
         public ReactiveCommand<Unit, Unit> Back { get; } = ReactiveCommand.Create(() => { });
 
