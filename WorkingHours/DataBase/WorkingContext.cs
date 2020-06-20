@@ -5,14 +5,21 @@ using WorkingHours.Logging;
 
 namespace WorkingHours.DataBase
 {
-    class WorkingContext : DbContext
+    internal class WorkingContext : DbContext
     {
-        public WorkingContext() : base()
+        public WorkingContext(bool ensureCreated) : base()
         {
-            var watch = Stopwatch.StartNew();
-            Database.EnsureCreated();
-            watch.Stop();
-            Log.Debug(nameof(Database.EnsureCreated) + " {Elapsed}s", watch.Elapsed.TotalMilliseconds);
+            if (ensureCreated)
+            {
+                var watch = Stopwatch.StartNew();
+                Database.EnsureCreated();
+                watch.Stop();
+                Log.Debug(nameof(Database.EnsureCreated) + " {Elapsed}s", watch.Elapsed.TotalMilliseconds);
+            }
+        }
+
+        public WorkingContext() : this(false)
+        {
         }
 
         public DbSet<WorkingDayDBModel>? WorkingDays { get; set; }

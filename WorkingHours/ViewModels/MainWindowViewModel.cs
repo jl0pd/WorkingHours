@@ -27,13 +27,11 @@ namespace WorkingHours.ViewModels
             IEnumerable<WorkingTask>? tasks = null;
             if (UseDB = useDB)
             {
-                using (var dbContext = new WorkingContext())
-                {
-                    tasks = dbContext
+                using var dbContext = new WorkingContext(true);
+                tasks = dbContext
                         .WorkingTasks
                         .Where(t => t.WorkingDay != null && t.WorkingDay.Date == DateTime.Today)
                         .Select(t => t.ToWorkingTask()).ToList();
-                }
                 Log.Info("Loaded {Tasks}", tasks);
             }
 
@@ -48,9 +46,9 @@ namespace WorkingHours.ViewModels
             {
                 using var dbContext = new WorkingContext();
 
-                var workingDay = dbContext.WorkingDays.FirstOrDefault(d => d.Date == DateTime.Today);
+                WorkingDayDBModel? workingDay = dbContext.WorkingDays.FirstOrDefault(d => d.Date == DateTime.Today);
 
-                var tasks = List.Items.Select(t => t.Task);
+                IEnumerable<WorkingTask>? tasks = List.Items.Select(t => t.Task);
 
                 if (workingDay is null)
                 {
