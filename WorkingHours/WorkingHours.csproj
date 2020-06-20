@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
@@ -26,8 +26,9 @@
     <AvaloniaResource Remove="Views\MiniMainWindow.xaml" />
     <AvaloniaResource Remove="Views\SettingsPanelView.xaml" />
     <AvaloniaResource Remove="Views\TotalElapsedView.xaml" />
-    <AvaloniaResource Remove="Views\WorkingTaskItemView.xaml" />
+    <AvaloniaResource Remove="Views\WorkingTaskView.xaml" />
     <AvaloniaResource Remove="Views\WorkingTasksView.xaml" />
+    <AvaloniaResource Remove="Views\WorkingDayView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Views\AboutWindow.xaml" />
@@ -35,8 +36,9 @@
     <None Remove="Views\MiniMainWindow.xaml" />
     <None Remove="Views\SettingsPanelView.xaml" />
     <None Remove="Views\TotalElapsedView.xaml" />
-    <None Remove="Views\WorkingTaskItemView.xaml" />
+    <None Remove="Views\WorkingTaskView.xaml" />
     <None Remove="Views\WorkingTasksView.xaml" />
+    <None Remove="Views\WorkingDayView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.10" />
@@ -65,7 +67,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\WorkingTaskItemView.xaml">
+    <EmbeddedResource Include="Views\WorkingTaskView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -86,6 +88,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MiniMainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\WorkingDayView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
