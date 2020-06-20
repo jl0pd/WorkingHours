@@ -12,9 +12,8 @@ namespace WorkingHours.DataBase.Models
         {
         }
 
-        public WorkingTaskDBModel(WorkingTask task)
+        internal WorkingTaskDBModel(WorkingTask task)
         {
-            task = task.ThrowIfNull(nameof(task));
             CurrentState = task.CurrentState;
             Name = task.Name;
             StartTime = task.StartTime;
@@ -36,7 +35,7 @@ namespace WorkingHours.DataBase.Models
 
         public DateTime? EndTime { get; set; }
 
-        public WorkingTask ToWorkingTask()
+        internal WorkingTask ToWorkingTask()
         {
             string name = Name.ThrowIfNull(nameof(Name));
             return new WorkingTask(name, StartTime, EndTime, Created, CurrentState);

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using WorkingHours.Models;
-using WorkingHours.Utils;
 
 namespace WorkingHours.DataBase.Models
 {
@@ -13,9 +12,8 @@ namespace WorkingHours.DataBase.Models
         {
         }
 
-        public WorkingDayDBModel(WorkingDay day)
+        internal WorkingDayDBModel(WorkingDay day)
         {
-            day = day.ThrowIfNull(nameof(day));
             Date = day.Date;
             Tasks = day.Tasks.Select(t => new WorkingTaskDBModel(t)).ToList();
         }
