@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using WorkingHours.Extensions;
 using WorkingHours.Utils;
 using WorkingHours.ViewModels;
 
@@ -31,7 +32,8 @@ namespace WorkingHours.Views
 
             Observable
                 .Merge(workingTask.OnCancelClick, workingTask.OnStopClick)
-                .ForEachAsync(_ => Close());
+                .Take(1)
+                .Subscribe(_ => Close());
             a.Children.Add(view);
         }
 
@@ -41,18 +43,13 @@ namespace WorkingHours.Views
 
             if (IsPointerPressed && IsPointerOver)
             {
-                Position = ToPixelPoint(GetAbsoluteCoords(e)) - PressPoint;
+                Position = GetAbsoluteCoords(e).ToPixelPoint() - PressPoint;
             }
             base.OnPointerMoved(e);
         }
 
-        private static PixelPoint ToPixelPoint(Point p) => new PixelPoint((int)p.X, (int)p.Y);
-
         private Point GetAbsoluteCoords(PointerEventArgs e)
-        {
-            Point pos = e.GetPosition(this);
-            return new Point(Position.X + pos.X, Position.Y + pos.Y);
-        }
+            => Position.ToPoint() + e.GetPosition(this);
 
         private bool IsPointerPressed { get; set; }
 
@@ -62,7 +59,7 @@ namespace WorkingHours.Views
         {
             e = e.ThrowIfNull(nameof(e));
 
-            PressPoint = ToPixelPoint(e.GetPosition(this));
+            PressPoint = e.GetPosition(this).ToPixelPoint();
             IsPointerPressed = true;
             base.OnPointerPressed(e);
         }
