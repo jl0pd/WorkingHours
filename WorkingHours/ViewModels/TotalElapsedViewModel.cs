@@ -7,7 +7,7 @@ using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
 {
-    internal class TotalElapsedViewModel : ViewModelBase
+    public class TotalElapsedViewModel : ViewModelBase
     {
         public TotalElapsedViewModel(IEnumerable<WorkingTask> enumerable)
         {

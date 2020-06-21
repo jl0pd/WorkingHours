@@ -28,11 +28,11 @@
         <Image Source="avares://WorkingHours/Assets/icons8-pin-32.png" />
       </Button>
 
-      <Button Command="{Binding $parent[Window].DataContext.ShowElapsed}" IsVisible="{Binding !!Items.Count}">
+      <Button Command="{Binding ShowElapsed}" IsVisible="{Binding !!TasksCount}">
         <Image Source="avares://WorkingHours/Assets/icons8-clock-32.png" />
       </Button>
 
-      <Button Command="{Binding $parent[Window].DataContext.AddItem}" DockPanel.Dock="Right">
+      <Button Command="{Binding Add}" DockPanel.Dock="Right">
         <Image Source="avares://WorkingHours/Assets/icons8-plus-32.png" />
       </Button>
 

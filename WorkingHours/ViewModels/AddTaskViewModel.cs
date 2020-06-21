@@ -5,7 +5,7 @@ using WorkingHours.Models;
 
 namespace WorkingHours.ViewModels
 {
-    internal class AddTaskViewModel : ViewModelBase
+    public class AddTaskViewModel : ViewModelBase
     {
         public AddTaskViewModel()
         {

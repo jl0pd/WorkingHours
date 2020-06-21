@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Linq;
+using Avalonia.Controls;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using WorkingHours.Logging;
 using WorkingHours.Models;
+using WorkingHours.Utils;
+using WorkingHours.Views;
 
 namespace WorkingHours.ViewModels
 {
@@ -17,6 +23,8 @@ namespace WorkingHours.ViewModels
 
         [Reactive] public WorkingDayViewModel? SelectedDay { get; set; }
 
+        private int TasksCount => SelectedDay?.Tasks?.Count ?? 0;
+
         public DaysEditorViewModel(IEnumerable<WorkingDay>? days)
         : base(new ObservableCollection<WorkingDayViewModel>(days?.Select(d => new WorkingDayViewModel(d))))
         {
@@ -26,29 +34,45 @@ namespace WorkingHours.ViewModels
             {
                 SelectedDay = currentDay;
             }
+
+            Add = ReactiveCommand.Create(() =>
+            {
+                var vm = new AddTaskViewModel();
+
+                Observable
+                    .Merge(vm.Add, vm.Cancel.Select<Unit, WorkingTask?>(_ => null))
+                    .Take(1)
+                    .Subscribe(item =>
+                    {
+                        if (item != null)
+                        {
+                            Log.Info("Created item {@Item}", item);
+                            var itemVm = new WorkingTaskViewModel(item);
+                            SelectedDay?.Tasks?.Add(item);
+                            new MiniMainWindow(itemVm)
+                            {
+                                Owner = WindowingUtils.GetMainWindow() as Window // hope it will be fixed some day https://github.com/AvaloniaUI/Avalonia/issues/3254
+                            }.Show();
+                        }
+                    });
+                return vm;
+            });
+
+            ShowElapsed = ReactiveCommand.Create(() =>
+            {
+                var vm = new TotalElapsedViewModel(SelectedDay?.Tasks ?? Enumerable.Empty<WorkingTask>());
+                return vm;
+            });
         }
+
 
         public DaysEditorViewModel()
         : this(null)
         {
         }
 
-        //public CurrentDayEditorViewModel(IEnumerable<WorkingTaskViewModel> viewModels)
-        //{
-        //    Items = new ObservableCollection<WorkingTaskViewModel>(viewModels);
-        //    Items.ToObservableChangeSet().OnItemAdded(vm =>
-        //    {
-        //        vm.OnCancelClick.Subscribe(async item =>
-        //        {
-        //            DialogResult res = await DialogProvider.ShowDialog($"Remove task '{item.Task.Name}'?", "Remove", 
-        //                ButtonType.YesNo, WindowingUtils.GetMainWindow()).ConfigureAwait(true);
+        public ReactiveCommand<Unit, AddTaskViewModel> Add { get; }
 
-        //            if (res == DialogResult.Yes)
-        //            {
-        //                Items.Remove(item);
-        //            }
-        //        });
-        //    }).Subscribe();
-        //}
+        public ReactiveCommand<Unit, TotalElapsedViewModel> ShowElapsed { get; }
     }
 }
