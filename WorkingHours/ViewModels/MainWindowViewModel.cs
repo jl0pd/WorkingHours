@@ -74,17 +74,17 @@ namespace WorkingHours.ViewModels
 
                 if (!(days is null))
                 {
-                    var loadedDays = days!.Select(d => d.Date).ToList();
-                    var storedDays = dbContext.WorkingDays.Select(d => d.Date).Where(d => loadedDays.Contains(d)).ToList();
-                    var groups = days.GroupBy(d => storedDays.Contains(d.Date));
+                    var inMemoryDays = days.Select(d => d.Date).ToList();
+                    var dbDays = dbContext.WorkingDays.Select(d => d.Date).Where(d => inMemoryDays.Contains(d)).ToList();
+                    var groups = days.GroupBy(d => dbDays.Contains(d.Date));
 
                     foreach (var group in groups)
                     {
-                        if (group.Key)
+                        if (group.Key) // already stored in DB
                         {
                             dbContext.UpdateRange(group.Select(d => new WorkingDayDBModel(d)));
                         }
-                        else
+                        else // new
                         {
                             dbContext.AddRange(group.Select(d => new WorkingDayDBModel(d)));
                         }
@@ -94,7 +94,7 @@ namespace WorkingHours.ViewModels
                     {
                         dbContext.SaveChanges();
                     }
-                    catch (Microsoft.EntityFrameworkCore.DbUpdateException e)
+                    catch (DbUpdateException e)
                     {
                         Log.Error("{Error}", e);
                     }
