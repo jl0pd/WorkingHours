@@ -8,17 +8,17 @@ namespace WorkingHours.ViewModels
 {
     public class WorkingTaskViewModel : ViewModelBase<WorkingTask>
     {
-        public WorkingTask Task { get; }
+        private string? Name => Model?.Name;
+        private TimeSpan Elapsed => Model?.Elapsed ?? TimeSpan.Zero;
 
-        private TimeSpan Elapsed => Task.Elapsed;
+        private IObservable<WorkingTask.State> State
+            => Model.WhenAnyValue(m => m.CurrentState);
 
-        private WorkingTask.State State => Task.CurrentState;
-
-        private string WorkTimeString => Task.CurrentState switch
+        private string WorkTimeString => Model.CurrentState switch
         {
             WorkingTask.State.NotStarted => "? - ?",
-            WorkingTask.State.Completed => $"{Task.StartTime:HH:mm} - {Task.EndTime:HH:mm}",
-            _ => $"{Task.StartTime:HH:mm} - ?",
+            WorkingTask.State.Completed => $"{Model.StartTime:HH:mm} - {Model.EndTime:HH:mm}",
+            _ => $"{Model.StartTime:HH:mm} - ?",
         };
 
         private const int Second = 1_000;
@@ -28,40 +28,47 @@ namespace WorkingHours.ViewModels
         public WorkingTaskViewModel() : this(new WorkingTask("Test")) { }
 
         public WorkingTaskViewModel(WorkingTask task)
+        : base(task)
         {
-            Task = task;
+            Model
+                .WhenAny(m => m.CurrentState, s => s)
+                .Subscribe(s =>
+                {
+                    switch (s.GetValue())
+                    {
+                        case WorkingTask.State.Started:
+                            Timer.Start();
+                            break;
+                        default:
+                            Timer.Stop();
+                            break;
+                    }
+                    this.RaisePropertyChanged(nameof(WorkTimeString));
+                });
 
             Timer.Elapsed += (sender, e) => this.RaisePropertyChanged(nameof(Elapsed));
 
             OnStartClick = ReactiveCommand.Create(() =>
             {
-                Task.Start();
-                Timer.Start();
-                this.RaisePropertyChanged(nameof(WorkTimeString));
-                this.RaisePropertyChanged(nameof(State));
+                Model?.Start();
                 return this;
             });
 
             OnStopClick = ReactiveCommand.Create(() =>
             {
-                Task.Stop();
-                Timer.Stop();
-                this.RaisePropertyChanged(nameof(WorkTimeString));
-                this.RaisePropertyChanged(nameof(State));
+                Model?.Stop();
                 return this;
             });
 
             OnCancelClick = ReactiveCommand.Create(() =>
             {
-                this.RaisePropertyChanged(nameof(State));
+                Model?.Cancel();
                 return this;
             });
         }
 
         public ReactiveCommand<Unit, WorkingTaskViewModel> OnCancelClick { get; }
-
         public ReactiveCommand<Unit, WorkingTaskViewModel> OnStartClick { get; }
-
         public ReactiveCommand<Unit, WorkingTaskViewModel> OnStopClick { get; }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace WorkingHours.Models
 {
     public class WorkingTask : ReactiveObject
     {
-        public enum State { NotStarted, Started, Completed, Canceled }
+        public enum State { None, NotStarted, Started, Completed, Canceled }
 
-        public State CurrentState { get; private set; } = State.NotStarted;
+        [Reactive] public State CurrentState { get; private set; } = State.NotStarted;
 
         public WorkingTask(string name)
         : this(name, DateTime.Now)
@@ -35,9 +36,9 @@ namespace WorkingHours.Models
 
         public DateTime Created { get; }
 
-        public DateTime? StartTime { get; private set; }
+        [Reactive] public DateTime? StartTime { get; private set; }
 
-        public DateTime? EndTime { get; private set; }
+        [Reactive] public DateTime? EndTime { get; private set; }
 
         public void Start()
         {

@@ -10,7 +10,7 @@
     <c:TaskStateToColorConverter x:Key="taskState2Color" />
   </UserControl.Resources>
   <Border Margin="1" BorderBrush="WhiteSmoke" BorderThickness="1"
-          Background="{Binding State, Converter={StaticResource taskState2Color}}">
+          Background="{Binding State^, Converter={StaticResource taskState2Color}}">
     <DockPanel>
       <DockPanel.Styles>
         <Style Selector="Button">
@@ -38,7 +38,7 @@
             Text="{Binding Elapsed, StringFormat=\{0:hh\\.mm\\.ss\}}"
             TextWrapping="NoWrap" />
       </UniformGrid>
-      <TextBlock Margin="5 5 0 5" VerticalAlignment="Center" Text="{Binding Task.Name}" TextWrapping="Wrap" />
+      <TextBlock Margin="5 5 0 5" VerticalAlignment="Center" Text="{Binding Name}" TextWrapping="Wrap" />
     </DockPanel>
   </Border>
 </UserControl>
