@@ -14,6 +14,6 @@ namespace WorkingHours.ViewModels
 
         public ViewModelBase() { }
 
-        [Reactive] public TModel? Model { get; set; }
+        [Reactive] public virtual TModel? Model { get; set; }
     }
 }

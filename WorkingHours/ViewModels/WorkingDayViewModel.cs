@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
+using DynamicData;
+using DynamicData.Binding;
+using ReactiveUI;
 using WorkingHours.Models;
+using WorkingHours.Providers;
+using WorkingHours.Utils;
+using static WorkingHours.Models.IDialogService;
 
 namespace WorkingHours.ViewModels
 {
@@ -31,6 +37,26 @@ namespace WorkingHours.ViewModels
         {
         }
 
+        public override WorkingDay? Model
+        {
+            get => base.Model;
+            set
+            {
+                value?.Tasks
+                .ToObservableChangeSet()
+                .ActOnEveryObject(t =>
+                {
+                    this.RaisePropertyChanged(nameof(Tasks));
+                    this.RaisePropertyChanged(nameof(TasksViewModels));
+                }, t =>
+                {
+                    this.RaisePropertyChanged(nameof(Tasks));
+                    this.RaisePropertyChanged(nameof(TasksViewModels));
+                });
+                base.Model = value;
+            }
+        }
+
         public DateTime Date
             => Model?.Date ?? DateTime.MinValue;
 
@@ -38,6 +64,22 @@ namespace WorkingHours.ViewModels
             => Model?.Tasks;
 
         public IEnumerable<WorkingTaskViewModel>? TasksViewModels
-            => Model?.Tasks.Select(t => new WorkingTaskViewModel(t));
+            => Model?.Tasks.Select(t => CreateVM(t));
+
+        private WorkingTaskViewModel CreateVM(WorkingTask task)
+        {
+            var vm = new WorkingTaskViewModel(task);
+            vm.OnCancelClick.Subscribe(async vm =>
+            {
+                DialogResult res = await DialogProvider.ShowDialog($"Remove task '{vm.Model!.Name}'?", "Remove",
+                                ButtonType.YesNo, WindowingUtils.GetMainWindow()).ConfigureAwait(true);
+
+                if (res == DialogResult.Yes)
+                {
+                    Model!.Tasks.Remove(vm.Model!);
+                }
+            });
+            return vm;
+        }
     }
 }
