@@ -29,11 +29,11 @@ namespace WorkingHours.ViewModels
                 using var dbContext = new WorkingContext(true);
                 days = dbContext
                         .WorkingDays
-                        .Where(d => d.Date.AddDays(7) > DateTime.Today)
+                        .Where(d => d.Date.AddDays(7) > DateTime.Today) // load last week
                         .Include(d => d.Tasks)
                         .Select(d => d.ToWorkingDay())
                         .ToList();
-                Log.Info("Loaded {Days}", days);
+                Log.Info("Loaded {@Days}", days);
             }
 
             Content = List = new DaysEditorViewModel(
@@ -74,15 +74,35 @@ namespace WorkingHours.ViewModels
 
                 if (!(days is null))
                 {
-                    var inMemoryDays = days.Select(d => d.Date).ToList();
-                    var dbDays = dbContext.WorkingDays.Select(d => d.Date).Where(d => inMemoryDays.Contains(d)).ToList();
+                    List<DateTime> inMemoryDays = days
+                                                    .Select(d => d.Date)
+                                                    .ToList();
+
+                    List<DateTime> dbDays = dbContext
+                                            .WorkingDays
+                                            .Select(d => d.Date)
+                                            .Where(d => inMemoryDays.Contains(d))
+                                            .ToList();
+
                     var groups = days.GroupBy(d => dbDays.Contains(d.Date));
+
+                    Log.Debug("Saving {@InMemoryDays}", inMemoryDays);
 
                     foreach (var group in groups)
                     {
                         if (group.Key) // already stored in DB
                         {
-                            dbContext.UpdateRange(group.Select(d => new WorkingDayDBModel(d)));
+                            foreach (WorkingDay day in group)
+                            {
+                                WorkingDayDBModel d = dbContext
+                                                        .WorkingDays
+                                                        .Include(d => d.Tasks)
+                                                        .First(d => day.Date == d.Date);
+                                d.Tasks = day
+                                            .Tasks
+                                            .Select(t => new WorkingTaskDBModel(t))
+                                            .ToList();
+                            }
                         }
                         else // new
                         {
