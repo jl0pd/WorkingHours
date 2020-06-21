@@ -23,7 +23,7 @@
   <ItemGroup>
     <AvaloniaResource Remove="Views\AboutWindow.xaml" />
     <AvaloniaResource Remove="Views\AddTaskView.xaml" />
-    <AvaloniaResource Remove="Views\CurrentDayEditorView.xaml" />
+    <AvaloniaResource Remove="Views\DaysEditorView.xaml" />
     <AvaloniaResource Remove="Views\MiniMainWindow.xaml" />
     <AvaloniaResource Remove="Views\SettingsPanelView.xaml" />
     <AvaloniaResource Remove="Views\TotalElapsedView.xaml" />
@@ -33,7 +33,7 @@
   <ItemGroup>
     <None Remove="Views\AboutWindow.xaml" />
     <None Remove="Views\AddTaskView.xaml" />
-    <None Remove="Views\CurrentDayEditorView.xaml" />
+    <None Remove="Views\DaysEditorView.xaml" />
     <None Remove="Views\MiniMainWindow.xaml" />
     <None Remove="Views\SettingsPanelView.xaml" />
     <None Remove="Views\TotalElapsedView.xaml" />
@@ -62,7 +62,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\CurrentDayEditorView.xaml">
+    <EmbeddedResource Include="Views\DaysEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -95,10 +95,5 @@
     <EmbeddedResource Include="Views\WorkingDayView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Views\CurrentDayEditorView.xaml.cs">
-      <DependentUpon>CurrentDayEditorView.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

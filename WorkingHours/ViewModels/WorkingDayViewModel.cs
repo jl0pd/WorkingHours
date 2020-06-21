@@ -27,8 +27,8 @@ namespace WorkingHours.ViewModels
         }
 
         public WorkingDayViewModel(WorkingDay day)
+        : base(day)
         {
-            Model = day;
         }
 
         public DateTime Date
@@ -37,7 +37,7 @@ namespace WorkingHours.ViewModels
         public IList<WorkingTask>? Tasks
             => Model?.Tasks;
 
-        public IEnumerable<WorkingTaskViewModel>? TasksViewModel
+        public IEnumerable<WorkingTaskViewModel>? TasksViewModels
             => Model?.Tasks.Select(t => new WorkingTaskViewModel(t));
     }
 }

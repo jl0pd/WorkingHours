@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:WorkingHours.Models;assembly=WorkingHours"
              xmlns:views="clr-namespace:WorkingHours.Views;assembly=WorkingHours"
-             xmlns:vms="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
+             xmlns:vm="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
              mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="250"
-             x:Class="WorkingHours.Views.CurrentDayEditorView">
+             x:Class="WorkingHours.Views.DaysEditorView">
+  <Design.DataContext>
+    <vm:DaysEditorViewModel />
+  </Design.DataContext>
   <DockPanel>
     <UniformGrid Rows="1" DockPanel.Dock="Bottom">
       <UniformGrid.Styles>
@@ -29,10 +32,22 @@
         <Image Source="avares://WorkingHours/Assets/icons8-clock-32.png" />
       </Button>
 
-      <Button  Command="{Binding $parent[Window].DataContext.AddItem}" DockPanel.Dock="Right">
+      <Button Command="{Binding $parent[Window].DataContext.AddItem}" DockPanel.Dock="Right">
         <Image Source="avares://WorkingHours/Assets/icons8-plus-32.png" />
       </Button>
+
     </UniformGrid>
-    <ListBox Items="{Binding Items}" SelectionMode="Single" ScrollViewer.VerticalScrollBarVisibility="Visible" />
+    <Grid ColumnDefinitions="25,*,25" RowDefinitions="25,*">
+      <Carousel Items="{Binding DaysViewModels}" SelectedItem="{Binding SelectedDay}"
+                Grid.ColumnSpan="3" Grid.RowSpan="2"
+                x:Name="_carousel">
+        <Carousel.ItemTemplate>
+          
+        </Carousel.ItemTemplate>
+      </Carousel>
+
+      <Button Content="&lt;" Click="OnLeftClick" />
+      <Button Content="&gt;" Click="OnRightClick" Grid.Column="2" />
+    </Grid>
   </DockPanel>
 </UserControl>

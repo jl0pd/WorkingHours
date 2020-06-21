@@ -3,23 +3,34 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
-using DynamicData;
-using DynamicData.Binding;
+using ReactiveUI.Fody.Helpers;
 using WorkingHours.Models;
-using WorkingHours.Providers;
-using WorkingHours.Utils;
-
-using static WorkingHours.Models.IDialogService;
 
 namespace WorkingHours.ViewModels
 {
-    public class CurrentDayEditorViewModel : ViewModelBase<WorkingDay>
+    public class DaysEditorViewModel : ViewModelBase<ObservableCollection<WorkingDayViewModel>>
     {
-        public IList<WorkingTask>? Tasks => Model?.Tasks;
+        public ObservableCollection<WorkingDayViewModel>? DaysViewModels => Model;
 
-        public CurrentDayEditorViewModel(WorkingDay day)
+        public IEnumerable<WorkingDay>? Days
+            => Model?.Where(m => !(m.Model is null)).Select(d => d.Model!);
+
+        [Reactive] public WorkingDayViewModel? SelectedDay { get; set; }
+
+        public DaysEditorViewModel(IEnumerable<WorkingDay>? days)
+        : base(new ObservableCollection<WorkingDayViewModel>(days?.Select(d => new WorkingDayViewModel(d))))
         {
-            Model = day;
+            var currentDay = Model?.FirstOrDefault(d => d.Date == DateTime.Today);
+            currentDay ??= Model?.FirstOrDefault();
+            if (!(currentDay is null))
+            {
+                SelectedDay = currentDay;
+            }
+        }
+
+        public DaysEditorViewModel()
+        : this(null)
+        {
         }
 
         //public CurrentDayEditorViewModel(IEnumerable<WorkingTaskViewModel> viewModels)

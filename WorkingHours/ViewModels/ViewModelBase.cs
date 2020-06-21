@@ -10,6 +10,10 @@ namespace WorkingHours.ViewModels
     public abstract class ViewModelBase<TModel> : ViewModelBase
     where TModel : class
     {
+        public ViewModelBase(TModel? model) => Model = model;
+
+        public ViewModelBase() { }
+
         [Reactive] public TModel? Model { get; set; }
     }
 }

@@ -5,14 +5,15 @@
              xmlns:vm="clr-namespace:WorkingHours.ViewModels;assembly=WorkingHours"
              xmlns:m="clr-namespace:"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             Width="400" Height="300"
              x:Class="WorkingHours.Views.WorkingDayView">
   <Design.DataContext>
     <vm:WorkingDayViewModel />
   </Design.DataContext>
   <DockPanel>
     <TextBlock Text="{Binding Date, StringFormat='\{0:d\}'}"
-               FontSize="16" DockPanel.Dock="Top" HorizontalAlignment="Center" />
-    <ListBox Items="{Binding TasksViewModel}" ScrollViewer.VerticalScrollBarVisibility="Visible" />
+               DockPanel.Dock="Top"
+               HorizontalAlignment="Center" VerticalAlignment="Center"
+               FontSize="16" Height="30" />
+    <ListBox Items="{Binding TasksViewModels}" ScrollViewer.VerticalScrollBarVisibility="Visible" />
   </DockPanel>
 </UserControl>
