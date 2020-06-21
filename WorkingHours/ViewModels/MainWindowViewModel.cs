@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Reactive.Linq;
 using Avalonia.Controls;
+using Microsoft.EntityFrameworkCore;
 using ReactiveUI.Fody.Helpers;
 using WorkingHours.DataBase;
 using WorkingHours.DataBase.Models;
@@ -29,6 +30,7 @@ namespace WorkingHours.ViewModels
                 days = dbContext
                         .WorkingDays
                         .Where(d => d.Date.AddDays(7) > DateTime.Today)
+                        .Include(d => d.Tasks)
                         .Select(d => d.ToWorkingDay())
                         .ToList();
                 Log.Info("Loaded {Days}", days);
@@ -64,14 +66,33 @@ namespace WorkingHours.ViewModels
             {
                 using var dbContext = new WorkingContext();
 
-                IEnumerable<WorkingDay>? days = List.Model.Where(d => !(d.Model is null)).Select(d => d.Model!);
+                IList<WorkingDay>? days = List
+                                            .Model
+                                            .Where(d => !(d.Model is null))
+                                            .Select(d => d.Model!)
+                                            .ToArray();
 
                 if (!(days is null))
                 {
-                    dbContext.UpdateRange(days.Select(d => new WorkingDayDBModel(d)));
+                    var loadedDays = days!.Select(d => d.Date).ToList();
+                    var storedDays = dbContext.WorkingDays.Select(d => d.Date).Where(d => loadedDays.Contains(d)).ToList();
+                    var groups = days.GroupBy(d => storedDays.Contains(d.Date));
+
+                    foreach (var group in groups)
+                    {
+                        if (group.Key)
+                        {
+                            dbContext.UpdateRange(group.Select(d => new WorkingDayDBModel(d)));
+                        }
+                        else
+                        {
+                            dbContext.AddRange(group.Select(d => new WorkingDayDBModel(d)));
+                        }
+                    }
+
                     try
                     {
-                        //dbContext.SaveChanges();
+                        dbContext.SaveChanges();
                     }
                     catch (Microsoft.EntityFrameworkCore.DbUpdateException e)
                     {

@@ -28,7 +28,8 @@ namespace WorkingHours.DataBase
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<WorkingTaskDBModel>().HasKey(p => new { p.Created, p.WorkingTaskId });
+            modelBuilder.Entity<WorkingTaskDBModel>().HasKey(t => new { t.Created, t.WorkingTaskId });
+            modelBuilder.Entity<WorkingDayDBModel>().HasKey(d => new { d.Date, d.WorkingDayId });
             base.OnModelCreating(modelBuilder);
         }
 
